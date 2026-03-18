@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaArrowRight, FaGithub } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -14,9 +14,150 @@ const fadeUp = {
   animate: { opacity: 1, y: 0 },
 };
 
+const buildCarouselRows = () => [
+  [
+    {
+      id: 'overview',
+      eyebrow: 'Overview',
+      title: 'Clean surfaces, deliberate type, and motion that earns its keep.',
+      body:
+        'The feed now moves like a living rail instead of a static dump. It stays minimal, but it should feel active even before you touch it.',
+      className: 'rail-wide tint-sun',
+    },
+    {
+      id: 'quote',
+      eyebrow: 'Pull line',
+      title: '"Good interfaces should feel felt before they feel explained."',
+      className: 'rail-quote tint-ice',
+    },
+    {
+      id: 'feature',
+      eyebrow: featuredProject.eyebrow,
+      title: featuredProject.title,
+      body: featuredProject.description,
+      meta: featuredProject.liveNote,
+      href: featuredProject.href,
+      linkLabel: featuredProject.linkLabel,
+      className: 'rail-feature tint-ocean',
+    },
+    {
+      id: 'linked',
+      eyebrow: 'Linked',
+      title: 'One project card, intentionally.',
+      body:
+        'The page still points outward only once. Everything else is there to deepen the feel of the work around it.',
+      className: 'rail-compact tint-mint',
+    },
+  ],
+  [
+    ...editorialPosts.map((post, index) => ({
+      id: post.id,
+      eyebrow: post.eyebrow,
+      title: post.title,
+      body: post.body,
+      className: index === 1 ? 'rail-post tint-orchid' : 'rail-post tint-ice',
+    })),
+    ...utilityCards.slice(0, 2).map((card) => ({
+      id: card.eyebrow.toLowerCase(),
+      eyebrow: card.eyebrow,
+      title: card.title,
+      className: 'rail-compact tint-silver',
+    })),
+  ],
+  [
+    ...utilityCards.slice(2).map((card, index) => ({
+      id: `${card.eyebrow.toLowerCase()}-${index}`,
+      eyebrow: card.eyebrow,
+      title: card.title,
+      className: index === 0 ? 'rail-compact tint-ember' : 'rail-compact tint-mint',
+    })),
+    {
+      id: 'connect',
+      eyebrow: 'Elsewhere',
+      title: 'GitHub for code, SoundCloud for sketches, email for the direct route.',
+      links: [
+        { label: 'GitHub', href: socialLinks.github },
+        { label: 'SoundCloud', href: socialLinks.soundcloud },
+        { label: 'Email', href: socialLinks.email },
+      ],
+      className: 'rail-ribbon tint-ocean',
+    },
+    {
+      id: 'availability',
+      eyebrow: 'Availability',
+      title: 'Open to projects where product taste matters as much as implementation.',
+      body:
+        'Careful motion, calm systems, and interfaces with a point of view are the through-line.',
+      className: 'rail-post tint-ice',
+    },
+  ],
+];
+
 const Home = () => {
+  const carouselRows = buildCarouselRows();
+  const [portraitAvailable, setPortraitAvailable] = useState(true);
+  const portraitSrc = '/IMG_7920.JPG';
+
   const scrollToFeed = () => {
     document.getElementById('bento-feed')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const renderCard = (item, key, isDuplicate = false) => {
+    const content = (
+      <>
+        <span className="eyebrow">{item.eyebrow}</span>
+        <h2 className={item.className.includes('rail-quote') ? 'quote-mark' : ''}>
+          {item.title}
+        </h2>
+        {item.body ? <p>{item.body}</p> : null}
+        {item.meta ? <span className="meta-note">{item.meta}</span> : null}
+        {item.href ? (
+          <span className="inline-link">
+            <FaGithub size={16} />
+            {item.linkLabel}
+          </span>
+        ) : null}
+        {item.links ? (
+          <div className="ribbon-links">
+            {item.links.map((link) => (
+              <span key={link.label} className="inline-link">
+                {link.label}
+              </span>
+            ))}
+          </div>
+        ) : null}
+      </>
+    );
+
+    if (item.href) {
+      return (
+        <motion.a
+          key={key}
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-hidden={isDuplicate}
+          tabIndex={isDuplicate ? -1 : undefined}
+          className={`bento-card marquee-card ${item.className}`}
+          whileHover={{ y: -8, scale: 1.015 }}
+          transition={{ type: 'spring', stiffness: 180, damping: 18 }}
+        >
+          {content}
+        </motion.a>
+      );
+    }
+
+    return (
+      <motion.article
+        key={key}
+        aria-hidden={isDuplicate}
+        className={`bento-card marquee-card ${item.className}`}
+        whileHover={{ y: -8, scale: 1.015 }}
+        transition={{ type: 'spring', stiffness: 180, damping: 18 }}
+      >
+        {content}
+      </motion.article>
+    );
   };
 
   return (
@@ -49,136 +190,66 @@ const Home = () => {
           initial={fadeUp.initial}
           animate={fadeUp.animate}
           transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="hero-note"
+          className="hero-note hero-portrait"
         >
-          <span className="eyebrow">Direction</span>
-          <p>
-            Minimalism only works when there is still enough texture to hold your
-            attention. This page is built around that line.
-          </p>
+          {portraitAvailable ? (
+            <img
+              src={portraitSrc}
+              alt="Julian Dower portrait"
+              className="portrait-image"
+              onError={() => setPortraitAvailable(false)}
+            />
+          ) : (
+            <div className="portrait-fallback" aria-hidden="true" />
+          )}
+          <div className="portrait-caption">
+            <span className="eyebrow">Portrait</span>
+            <p>
+              A cleaner personal anchor in the hero so the page feels less abstract.
+            </p>
+          </div>
         </motion.aside>
       </section>
 
-      <section id="bento-feed" className="bento-grid" aria-label="Portfolio feed">
-        <motion.article
-          initial={fadeUp.initial}
-          animate={fadeUp.animate}
-          transition={{ duration: 0.8, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-          className="bento-card card-hero span-8"
-        >
-          <span className="eyebrow">Overview</span>
-          <h2>Clean surfaces, deliberate type, and motion that earns its keep.</h2>
+      <motion.section
+        id="bento-feed"
+        className="carousel-section"
+        aria-label="Portfolio feed"
+        initial={fadeUp.initial}
+        animate={fadeUp.animate}
+        transition={{ duration: 0.8, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div className="section-heading">
+          <span className="eyebrow">Moving feed</span>
+          <h2>An infinite card rail with softer fades and more color in the hover state.</h2>
           <p>
-            The work here leans editorial on purpose. Cards stack like notes instead
-            of a project dump, so the page keeps moving without feeling noisy.
+            Hover any row to slow down and let the gradients fill. The motion stays
+            minimal, but the page should feel alive now.
           </p>
-        </motion.article>
+        </div>
 
-        <motion.article
-          initial={fadeUp.initial}
-          animate={fadeUp.animate}
-          transition={{ duration: 0.8, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-          className="bento-card card-quote span-4"
-        >
-          <span className="eyebrow">Pull line</span>
-          <p className="quote-mark">
-            "Good interfaces should feel felt before they feel explained."
-          </p>
-        </motion.article>
+        <div className="carousel-shell">
+          {carouselRows.map((row, index) => (
+            <div
+              key={`row-${index}`}
+              className="marquee-row"
+              style={{ '--marquee-duration': `${34 + index * 6}s` }}
+            >
+              <div className={`marquee-track${index % 2 === 1 ? ' reverse' : ''}`}>
+                {[...row, ...row].map((item, itemIndex) => {
+                  const isDuplicate = itemIndex >= row.length;
 
-        <motion.article
-          initial={fadeUp.initial}
-          animate={fadeUp.animate}
-          transition={{ duration: 0.8, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
-          className="bento-card card-feature span-7"
-        >
-          <div className="card-stack">
-            <span className="eyebrow">{featuredProject.eyebrow}</span>
-            <h2>{featuredProject.title}</h2>
-            <p>{featuredProject.description}</p>
-            <span className="meta-note">{featuredProject.liveNote}</span>
-          </div>
-          <a
-            href={featuredProject.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-link"
-          >
-            <FaGithub size={16} />
-            {featuredProject.linkLabel}
-          </a>
-        </motion.article>
-
-        <motion.article
-          initial={fadeUp.initial}
-          animate={fadeUp.animate}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="bento-card card-mini span-5"
-        >
-          <span className="eyebrow">Linked</span>
-          <h3>One project card, intentionally.</h3>
-          <p>
-            Rather than filling the page with repo tiles, the feed keeps the focus
-            on one piece and lets the rest of the personality live in the writing.
-          </p>
-        </motion.article>
-
-        {editorialPosts.map((post, index) => (
-          <motion.article
-            key={post.id}
-            initial={fadeUp.initial}
-            animate={fadeUp.animate}
-            transition={{
-              duration: 0.8,
-              delay: 0.36 + index * 0.08,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="bento-card card-post span-4"
-          >
-            <span className="eyebrow">{post.eyebrow}</span>
-            <h3>{post.title}</h3>
-            <p>{post.body}</p>
-          </motion.article>
-        ))}
-
-        {utilityCards.map((card, index) => (
-          <motion.article
-            key={card.eyebrow}
-            initial={fadeUp.initial}
-            animate={fadeUp.animate}
-            transition={{
-              duration: 0.75,
-              delay: 0.56 + index * 0.06,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className={`bento-card card-utility span-3 tone-${card.tone}`}
-          >
-            <span className="eyebrow">{card.eyebrow}</span>
-            <h3>{card.title}</h3>
-          </motion.article>
-        ))}
-
-        <motion.article
-          initial={fadeUp.initial}
-          animate={fadeUp.animate}
-          transition={{ duration: 0.8, delay: 0.82, ease: [0.22, 1, 0.36, 1] }}
-          className="bento-card card-ribbon span-12"
-        >
-          <div className="card-stack">
-            <span className="eyebrow">Elsewhere</span>
-            <h2>GitHub for code, SoundCloud for sketches, email for the direct route.</h2>
-          </div>
-          <div className="ribbon-links">
-            <a href={socialLinks.github} target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
-            <a href={socialLinks.soundcloud} target="_blank" rel="noopener noreferrer">
-              SoundCloud
-            </a>
-            <a href={socialLinks.email}>Email</a>
-          </div>
-        </motion.article>
-      </section>
+                  return renderCard(
+                    item,
+                    `${item.id}-${index}-${itemIndex}`,
+                    isDuplicate
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.section>
     </div>
   );
 };

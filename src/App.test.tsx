@@ -5,19 +5,45 @@ import App from './App';
 
 jest.mock('framer-motion', () => {
   const ReactRuntime: any = require('react');
+  const motionProps = new Set([
+    'animate',
+    'exit',
+    'initial',
+    'layout',
+    'layoutId',
+    'transition',
+    'variants',
+    'viewport',
+    'whileHover',
+    'whileInView',
+    'whileTap',
+  ]);
 
   return {
     motion: new Proxy(
       {},
       {
         get: (_, tag) =>
-          ReactRuntime.forwardRef((props: any, ref: any) =>
-            ReactRuntime.createElement(
-              tag as string,
-              { ref, ...props },
-              props.children
-            )
-          ),
+          ReactRuntime.forwardRef((props: any, ref: any) => {
+            const cleanProps = Object.entries(props).reduce(
+              (acc, [key, value]) => {
+                if (!motionProps.has(key)) {
+                  acc[key] = value;
+                }
+
+                return acc;
+              },
+              {} as Record<string, unknown>
+            );
+
+            return (
+              ReactRuntime.createElement(
+                tag as string,
+                { ref, ...cleanProps },
+                props.children
+              )
+            );
+          })
       }
     ),
   };
