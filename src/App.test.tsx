@@ -1,14 +1,85 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
-test('renders portfolio sections', () => {
-  const { getByText } = render(<App />);
-  
-  // Check if main sections are rendered
-  expect(getByText(/about me/i)).toBeInTheDocument();
-  expect(getByText(/my projects/i)).toBeInTheDocument();
-  expect(getByText(/skills/i)).toBeInTheDocument();
-  expect(getByText(/contact me/i)).toBeInTheDocument();
+jest.mock('framer-motion', () => {
+  const ReactRuntime: any = require('react');
+
+  return {
+    motion: new Proxy(
+      {},
+      {
+        get: (_, tag) =>
+          ReactRuntime.forwardRef((props: any, ref: any) =>
+            ReactRuntime.createElement(
+              tag as string,
+              { ref, ...props },
+              props.children
+            )
+          ),
+      }
+    ),
+  };
+});
+
+const renderApp = () =>
+  render(
+    <BrowserRouter
+      future={{
+        v7_relativeSplatPath: true,
+        v7_startTransition: true,
+      }}
+    >
+      <App />
+    </BrowserRouter>
+  );
+
+describe('App routes', () => {
+  beforeEach(() => {
+    window.history.pushState({}, '', '/');
+  });
+
+  test('renders the home page with Julian Dower and the wissenwert link', () => {
+    renderApp();
+
+    expect(
+      screen.getByRole('heading', {
+        name: /fluid digital work across software, music, and design/i,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /julian dower/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /view wissenwert/i })
+    ).toHaveAttribute('href', 'https://github.com/juliandower/wissenwert');
+  });
+
+  test('redirects /portfolio to the home experience', () => {
+    window.history.pushState({}, '', '/portfolio');
+
+    renderApp();
+
+    expect(
+      screen.getByRole('heading', {
+        name: /fluid digital work across software, music, and design/i,
+      })
+    ).toBeInTheDocument();
+  });
+
+  test('renders the contact page', () => {
+    window.history.pushState({}, '', '/contact');
+
+    renderApp();
+
+    expect(
+      screen.getByRole('heading', {
+        name: /reach out if the project needs both taste and build quality/i,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /dower\.julian@gmail\.com/i })
+    ).toBeInTheDocument();
+  });
 });

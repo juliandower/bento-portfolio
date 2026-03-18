@@ -1,121 +1,88 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
+import { FaGithub, FaSoundcloud } from 'react-icons/fa';
+import { MdEmail } from 'react-icons/md';
+import { socialLinks } from '../data/siteContent';
+
+const contactItems = [
+  {
+    label: 'Email',
+    detail: 'dower.julian@gmail.com',
+    href: socialLinks.email,
+    icon: MdEmail,
+  },
+  {
+    label: 'GitHub',
+    detail: 'github.com/juliandower',
+    href: socialLinks.github,
+    icon: FaGithub,
+  },
+  {
+    label: 'SoundCloud',
+    detail: 'soundcloud.com/yungjuan420',
+    href: socialLinks.soundcloud,
+    icon: FaSoundcloud,
+  },
+];
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-  const [status, setStatus] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your form submission logic here
-    setStatus('success');
-    // Reset form
-    setFormData({ name: '', email: '', message: '' });
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
   return (
-    <div className="min-h-screen py-20 px-4">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-12 text-center">Get in Touch</h1>
-        
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="name" className="block text-gray-700 mb-2">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="email" className="block text-gray-700 mb-2">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="message" className="block text-gray-700 mb-2">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                rows="5"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              ></textarea>
-            </div>
-            
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-            >
-              Send Message
-            </motion.button>
-          </form>
+    <div className="page contact-page">
+      <motion.section
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+        className="contact-hero"
+      >
+        <span className="eyebrow">Contact</span>
+        <h1>Reach out if the project needs both taste and build quality.</h1>
+        <p className="lead">
+          The cleanest route is email. GitHub and SoundCloud are here too if you want
+          the surrounding context.
+        </p>
+      </motion.section>
 
-          {status === 'success' && (
-            <div className="mt-4 p-4 bg-green-100 text-green-700 rounded-lg">
-              Thank you for your message! I'll get back to you soon.
-            </div>
-          )}
-        </div>
+      <section className="bento-grid contact-grid">
+        {contactItems.map(({ label, detail, href, icon: Icon }, index) => (
+          <motion.a
+            key={label}
+            href={href}
+            target={href.startsWith('mailto:') ? undefined : '_blank'}
+            rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.75,
+              delay: 0.12 + index * 0.08,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="bento-card contact-card span-4"
+          >
+            <span className="icon-wrap">
+              <Icon size={20} />
+            </span>
+            <span className="eyebrow">{label}</span>
+            <h2>{detail}</h2>
+            <span className="inline-link">Open</span>
+          </motion.a>
+        ))}
 
-        <div className="mt-12 flex justify-center space-x-8">
-          <motion.a
-            whileHover={{ y: -3 }}
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-600 hover:text-gray-900"
-          >
-            <FaGithub className="text-3xl" />
-          </motion.a>
-          <motion.a
-            whileHover={{ y: -3 }}
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-600 hover:text-gray-900"
-          >
-            <FaLinkedin className="text-3xl" />
-          </motion.a>
-          <motion.a
-            whileHover={{ y: -3 }}
-            href="mailto:your.email@example.com"
-            className="text-gray-600 hover:text-gray-900"
-          >
-            <FaEnvelope className="text-3xl" />
-          </motion.a>
-        </div>
-      </div>
+        <motion.article
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
+          className="bento-card card-ribbon span-12"
+        >
+          <div className="card-stack">
+            <span className="eyebrow">Working style</span>
+            <h2>Thoughtful, direct, and detail-heavy where it counts.</h2>
+            <p>
+              I care about structure, rhythm, and reducing visual noise without
+              flattening the personality out of the work.
+            </p>
+          </div>
+        </motion.article>
+      </section>
     </div>
   );
 };

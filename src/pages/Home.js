@@ -1,82 +1,183 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaReact, FaNodeJs, FaGithub } from 'react-icons/fa';
-import { SiTypescript, SiNextdotjs, SiVercel } from 'react-icons/si';
+import { FaArrowRight, FaGithub } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import {
+  editorialPosts,
+  featuredProject,
+  socialLinks,
+  utilityCards,
+} from '../data/siteContent';
+
+const fadeUp = {
+  initial: { opacity: 0, y: 28 },
+  animate: { opacity: 1, y: 0 },
+};
 
 const Home = () => {
-  return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <motion.section 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="h-screen flex flex-col justify-center items-center text-center px-4"
-      >
-        <h1 className="text-5xl md:text-7xl font-bold mb-6">
-          Hi, I'm <span className="text-blue-600">Your Name</span>
-        </h1>
-        <p className="text-xl md:text-2xl text-gray-600 mb-8">
-          A passionate React Developer building amazing web experiences
-        </p>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors"
-        >
-          View My Work
-        </motion.button>
-      </motion.section>
+  const scrollToFeed = () => {
+    document.getElementById('bento-feed')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-      {/* About Me Section */}
-      <section className="py-20 px-4 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-8 text-center">About Me</h2>
-          <div className="space-y-6">
-            <div className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-md">
-              <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-              <p>Started my journey in web development</p>
-            </div>
-            <div className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-md">
-              <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-              <p>Mastered React and modern web technologies</p>
-            </div>
-            <div className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-md">
-              <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-              <p>Built numerous projects and gained real-world experience</p>
-            </div>
+  return (
+    <div className="page home-page">
+      <section className="hero-intro">
+        <motion.div
+          initial={fadeUp.initial}
+          animate={fadeUp.animate}
+          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          className="hero-copy"
+        >
+          <span className="eyebrow">Julian Dower</span>
+          <h1>Fluid digital work across software, music, and design.</h1>
+          <p className="lead">
+            A single long-form portfolio feed with soft gradients, tight copy, and
+            one featured project worth opening.
+          </p>
+          <div className="hero-actions">
+            <button type="button" className="primary-pill" onClick={scrollToFeed}>
+              Explore the feed
+              <FaArrowRight size={14} />
+            </button>
+            <Link className="secondary-pill" to="/contact">
+              Contact
+            </Link>
           </div>
-        </div>
+        </motion.div>
+
+        <motion.aside
+          initial={fadeUp.initial}
+          animate={fadeUp.animate}
+          transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="hero-note"
+        >
+          <span className="eyebrow">Direction</span>
+          <p>
+            Minimalism only works when there is still enough texture to hold your
+            attention. This page is built around that line.
+          </p>
+        </motion.aside>
       </section>
 
-      {/* Tech Stack Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12 text-center">Tech Stack</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md"
-            >
-              <FaReact className="text-5xl text-blue-500 mb-4" />
-              <p className="font-semibold">React</p>
-            </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md"
-            >
-              <SiNextdotjs className="text-5xl text-black mb-4" />
-              <p className="font-semibold">Next.js</p>
-            </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md"
-            >
-              <SiTypescript className="text-5xl text-blue-700 mb-4" />
-              <p className="font-semibold">TypeScript</p>
-            </motion.div>
+      <section id="bento-feed" className="bento-grid" aria-label="Portfolio feed">
+        <motion.article
+          initial={fadeUp.initial}
+          animate={fadeUp.animate}
+          transition={{ duration: 0.8, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+          className="bento-card card-hero span-8"
+        >
+          <span className="eyebrow">Overview</span>
+          <h2>Clean surfaces, deliberate type, and motion that earns its keep.</h2>
+          <p>
+            The work here leans editorial on purpose. Cards stack like notes instead
+            of a project dump, so the page keeps moving without feeling noisy.
+          </p>
+        </motion.article>
+
+        <motion.article
+          initial={fadeUp.initial}
+          animate={fadeUp.animate}
+          transition={{ duration: 0.8, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          className="bento-card card-quote span-4"
+        >
+          <span className="eyebrow">Pull line</span>
+          <p className="quote-mark">
+            "Good interfaces should feel felt before they feel explained."
+          </p>
+        </motion.article>
+
+        <motion.article
+          initial={fadeUp.initial}
+          animate={fadeUp.animate}
+          transition={{ duration: 0.8, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+          className="bento-card card-feature span-7"
+        >
+          <div className="card-stack">
+            <span className="eyebrow">{featuredProject.eyebrow}</span>
+            <h2>{featuredProject.title}</h2>
+            <p>{featuredProject.description}</p>
+            <span className="meta-note">{featuredProject.liveNote}</span>
           </div>
-        </div>
+          <a
+            href={featuredProject.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-link"
+          >
+            <FaGithub size={16} />
+            {featuredProject.linkLabel}
+          </a>
+        </motion.article>
+
+        <motion.article
+          initial={fadeUp.initial}
+          animate={fadeUp.animate}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="bento-card card-mini span-5"
+        >
+          <span className="eyebrow">Linked</span>
+          <h3>One project card, intentionally.</h3>
+          <p>
+            Rather than filling the page with repo tiles, the feed keeps the focus
+            on one piece and lets the rest of the personality live in the writing.
+          </p>
+        </motion.article>
+
+        {editorialPosts.map((post, index) => (
+          <motion.article
+            key={post.id}
+            initial={fadeUp.initial}
+            animate={fadeUp.animate}
+            transition={{
+              duration: 0.8,
+              delay: 0.36 + index * 0.08,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="bento-card card-post span-4"
+          >
+            <span className="eyebrow">{post.eyebrow}</span>
+            <h3>{post.title}</h3>
+            <p>{post.body}</p>
+          </motion.article>
+        ))}
+
+        {utilityCards.map((card, index) => (
+          <motion.article
+            key={card.eyebrow}
+            initial={fadeUp.initial}
+            animate={fadeUp.animate}
+            transition={{
+              duration: 0.75,
+              delay: 0.56 + index * 0.06,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className={`bento-card card-utility span-3 tone-${card.tone}`}
+          >
+            <span className="eyebrow">{card.eyebrow}</span>
+            <h3>{card.title}</h3>
+          </motion.article>
+        ))}
+
+        <motion.article
+          initial={fadeUp.initial}
+          animate={fadeUp.animate}
+          transition={{ duration: 0.8, delay: 0.82, ease: [0.22, 1, 0.36, 1] }}
+          className="bento-card card-ribbon span-12"
+        >
+          <div className="card-stack">
+            <span className="eyebrow">Elsewhere</span>
+            <h2>GitHub for code, SoundCloud for sketches, email for the direct route.</h2>
+          </div>
+          <div className="ribbon-links">
+            <a href={socialLinks.github} target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+            <a href={socialLinks.soundcloud} target="_blank" rel="noopener noreferrer">
+              SoundCloud
+            </a>
+            <a href={socialLinks.email}>Email</a>
+          </div>
+        </motion.article>
       </section>
     </div>
   );
