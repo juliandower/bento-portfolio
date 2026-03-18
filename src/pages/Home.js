@@ -14,14 +14,14 @@ const fadeUp = {
   animate: { opacity: 1, y: 0 },
 };
 
-const feedTemplates = [
+const homeCards = [
   {
     id: 'overview',
     eyebrow: 'Overview',
-    title: 'Clean surfaces, deliberate type, and motion that earns its keep.',
+    title: 'A portfolio that feels editorial, spatial, and a little more human.',
     body:
-      'This version behaves like a proper scroll system. The cards do not move until you move, and the stack keeps renewing itself underneath the header.',
-    className: 'stack-wide tint-sun',
+      'Software, music, and design all sit in the same visual system here. The goal is clean structure with enough color and motion to keep the page from going flat.',
+    className: 'feature-card tint-sun span-6',
   },
   {
     id: 'feature',
@@ -31,33 +31,34 @@ const feedTemplates = [
     meta: featuredProject.liveNote,
     href: featuredProject.href,
     linkLabel: featuredProject.linkLabel,
-    className: 'stack-feature tint-ocean',
+    className: 'feature-card tint-ocean span-6',
   },
   {
     id: 'quote',
     eyebrow: 'Pull line',
     title: '"Good interfaces should feel felt before they feel explained."',
-    className: 'stack-quote tint-ice',
+    className: 'quote-card tint-ice span-4',
   },
   ...editorialPosts.map((post, index) => ({
     id: post.id,
     eyebrow: post.eyebrow,
     title: post.title,
     body: post.body,
-    className: index === 1 ? 'stack-card tint-orchid' : 'stack-card tint-ice',
+    className: `story-card ${index === 1 ? 'tint-orchid' : 'tint-ice'} span-4`,
   })),
   ...utilityCards.map((card, index) => ({
     id: `${card.eyebrow.toLowerCase()}-${index}`,
     eyebrow: card.eyebrow,
     title: card.title,
-    className:
+    className: `utility-card ${
       index === 0
-        ? 'stack-compact tint-silver'
+        ? 'tint-silver'
         : index === 1
-          ? 'stack-compact tint-mint'
+          ? 'tint-mint'
           : index === 2
-            ? 'stack-compact tint-ember'
-            : 'stack-compact tint-ice',
+            ? 'tint-ember'
+            : 'tint-ice'
+    } span-3`,
   })),
   {
     id: 'connect',
@@ -68,162 +69,124 @@ const feedTemplates = [
       { label: 'SoundCloud', href: socialLinks.soundcloud },
       { label: 'Email', href: socialLinks.email },
     ],
-    className: 'stack-ribbon tint-ocean',
+    className: 'ribbon-card tint-ocean span-12',
   },
 ];
 
-const INITIAL_CARD_COUNT = feedTemplates.length;
-const BATCH_SIZE = 6;
-const MAX_CARD_COUNT = 26;
-const ESTIMATED_CARD_HEIGHT = 320;
-const CARD_GAP = 18;
+const INITIAL_LOOP_COUNT = homeCards.length + 4;
+const LOOP_BATCH_SIZE = 6;
 
-const buildFeedBatch = (start, count) =>
+const buildLoopBatch = (start, count) =>
   Array.from({ length: count }, (_, offset) => {
-    const index = start + offset;
-    const template = feedTemplates[index % feedTemplates.length];
+    const sequence = start + offset;
+    const template =
+      homeCards[((sequence % homeCards.length) + homeCards.length) % homeCards.length];
 
     return {
       ...template,
-      id: `${template.id}-${index}`,
-      sequence: index,
+      id: `${template.id}-${sequence}`,
     };
   });
 
 const Home = () => {
   const [portraitAvailable, setPortraitAvailable] = useState(true);
-  const [cards, setCards] = useState(() => buildFeedBatch(0, INITIAL_CARD_COUNT));
+  const [loopCards, setLoopCards] = useState(() =>
+    buildLoopBatch(0, INITIAL_LOOP_COUNT)
+  );
   const portraitSrc = '/IMG_7920.JPG';
-  const feedMarkerRef = useRef(null);
-  const scrollWindowRef = useRef(null);
-  const cardRefs = useRef(new Map());
-  const cardsRef = useRef(cards);
-  const nextIndexRef = useRef(INITIAL_CARD_COUNT);
-  const mutatingRef = useRef(false);
-
-  useEffect(() => {
-    cardsRef.current = cards;
-  }, [cards]);
-
-  useEffect(() => {
-    const scroller = scrollWindowRef.current;
-
-    if (!scroller) {
-      return undefined;
-    }
-
-    if (scroller.scrollHeight <= scroller.clientHeight + 200) {
-      const nextCards = [
-        ...cardsRef.current,
-        ...buildFeedBatch(nextIndexRef.current, BATCH_SIZE),
-      ];
-
-      nextIndexRef.current += BATCH_SIZE;
-      cardsRef.current = nextCards;
-      setCards(nextCards);
-    }
-
-    return undefined;
-  }, []);
+  const nextSequenceRef = useRef(INITIAL_LOOP_COUNT);
+  const loadingRef = useRef(false);
 
   const scrollToFeed = () => {
-    feedMarkerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  const recycleFeed = () => {
-    const scroller = scrollWindowRef.current;
-
-    if (!scroller || mutatingRef.current) {
-      return;
-    }
-
-    mutatingRef.current = true;
-
-    const appendedCards = buildFeedBatch(nextIndexRef.current, BATCH_SIZE);
-    nextIndexRef.current += BATCH_SIZE;
-
-    const extendedCards = [...cardsRef.current, ...appendedCards];
-    let nextCards = extendedCards;
-    let removedHeight = 0;
-
-    if (scroller.scrollTop > 1100 && extendedCards.length > MAX_CARD_COUNT) {
-      const removedCards = extendedCards.slice(0, BATCH_SIZE);
-
-      removedHeight = removedCards.reduce((total, card) => {
-        const node = cardRefs.current.get(card.id);
-
-        return total + (node?.offsetHeight || ESTIMATED_CARD_HEIGHT) + CARD_GAP;
-      }, 0);
-
-      nextCards = extendedCards.slice(BATCH_SIZE);
-    }
-
-    cardsRef.current = nextCards;
-    setCards(nextCards);
-
-    requestAnimationFrame(() => {
-      if (removedHeight > 0) {
-        scroller.scrollTop -= removedHeight;
-      }
-
-      mutatingRef.current = false;
+    document.getElementById('portfolio-grid')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
     });
   };
 
-  const handleScroll = (event) => {
-    const scroller = event.currentTarget;
+  useEffect(() => {
+    const handleWindowScroll = () => {
+      if (loadingRef.current) {
+        return;
+      }
 
-    if (scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 900) {
-      recycleFeed();
-    }
-  };
+      const threshold = 1400;
+      const scrolledToBottom =
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - threshold;
 
-  const renderCard = (item) => {
+      if (!scrolledToBottom) {
+        return;
+      }
+
+      loadingRef.current = true;
+
+      setLoopCards((currentCards) => [
+        ...currentCards,
+        ...buildLoopBatch(nextSequenceRef.current, LOOP_BATCH_SIZE),
+      ]);
+
+      nextSequenceRef.current += LOOP_BATCH_SIZE;
+
+      requestAnimationFrame(() => {
+        loadingRef.current = false;
+      });
+    };
+
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleWindowScroll);
+    };
+  }, []);
+
+  const renderCard = (card, index) => {
     const content = (
       <>
-        <span className="eyebrow">{item.eyebrow}</span>
-        <h2 className={item.className.includes('stack-quote') ? 'quote-mark' : ''}>
-          {item.title}
+        <span className="eyebrow">{card.eyebrow}</span>
+        <h2 className={card.className.includes('quote-card') ? 'quote-mark' : ''}>
+          {card.title}
         </h2>
-        {item.body ? <p>{item.body}</p> : null}
-        {item.meta ? <span className="meta-note">{item.meta}</span> : null}
-        {item.href ? (
+        {card.body ? <p>{card.body}</p> : null}
+        {card.meta ? <span className="meta-note">{card.meta}</span> : null}
+        {card.href ? (
           <span className="inline-link">
             <FaGithub size={16} />
-            {item.linkLabel}
+            {card.linkLabel}
           </span>
         ) : null}
-        {item.links ? (
+        {card.links ? (
           <div className="ribbon-links">
-            {item.links.map((link) => (
-              <span key={link.label} className="inline-link">
+            {card.links.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target={link.href.startsWith('mailto:') ? undefined : '_blank'}
+                rel={link.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+              >
                 {link.label}
-              </span>
+              </a>
             ))}
           </div>
         ) : null}
       </>
     );
 
-    if (item.href) {
+    if (card.href) {
       return (
         <motion.a
-          key={item.id}
-          href={item.href}
+          key={card.id}
+          href={card.href}
           target="_blank"
           rel="noopener noreferrer"
-          ref={(node) => {
-            if (node) {
-              cardRefs.current.set(item.id, node);
-            } else {
-              cardRefs.current.delete(item.id);
-            }
+          className={`bento-card ${card.className}`}
+          initial={fadeUp.initial}
+          animate={fadeUp.animate}
+          transition={{
+            duration: 0.5,
+            delay: 0.14 + index * 0.05,
+            ease: [0.22, 1, 0.36, 1],
           }}
-          className={`bento-card feed-card ${item.className}`}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
           whileHover={{ y: -8, scale: 1.015 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
         >
           {content}
         </motion.a>
@@ -232,19 +195,16 @@ const Home = () => {
 
     return (
       <motion.article
-        key={item.id}
-        ref={(node) => {
-          if (node) {
-            cardRefs.current.set(item.id, node);
-          } else {
-            cardRefs.current.delete(item.id);
-          }
+        key={card.id}
+        className={`bento-card ${card.className}`}
+        initial={fadeUp.initial}
+        animate={fadeUp.animate}
+        transition={{
+          duration: 0.5,
+          delay: 0.14 + index * 0.05,
+          ease: [0.22, 1, 0.36, 1],
         }}
-        className={`bento-card feed-card ${item.className}`}
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
         whileHover={{ y: -8, scale: 1.015 }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       >
         {content}
       </motion.article>
@@ -253,91 +213,58 @@ const Home = () => {
 
   return (
     <div className="page home-page">
-      <div className="scroll-window-shell">
-        <div
-          className="scroll-window"
-          onScroll={handleScroll}
-          ref={scrollWindowRef}
+      <section className="home-grid" id="portfolio-grid">
+        <motion.article
+          className="bento-card intro-card tint-ice span-7"
+          initial={fadeUp.initial}
+          animate={fadeUp.animate}
+          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
         >
-          <section className="hero-intro">
-            <motion.div
-              initial={fadeUp.initial}
-              animate={fadeUp.animate}
-              transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-              className="hero-copy"
-            >
-              <span className="eyebrow">Julian Dower</span>
-              <h1>Fluid digital work across software, music, and design.</h1>
-              <p className="lead">
-                A single long-form portfolio feed with soft gradients, tight copy,
-                and one featured project worth opening.
-              </p>
-              <div className="hero-actions">
-                <button type="button" className="primary-pill" onClick={scrollToFeed}>
-                  Explore the feed
-                  <FaArrowRight size={14} />
-                </button>
-                <Link className="secondary-pill" to="/contact">
-                  Contact
-                </Link>
-              </div>
-            </motion.div>
+          <span className="eyebrow">Julian Dower</span>
+          <h1>Fluid digital work across software, music, and design.</h1>
+          <p className="lead">
+            A cleaner first pass at the portfolio: one sticky header, one page scroll,
+            and a tighter bento composition where the intro, portrait, featured work,
+            and editorial notes all belong to the same surface.
+          </p>
+          <div className="hero-actions">
+            <button type="button" className="primary-pill" onClick={scrollToFeed}>
+              View the work
+              <FaArrowRight size={14} />
+            </button>
+            <Link className="secondary-pill" to="/contact">
+              Contact
+            </Link>
+          </div>
+        </motion.article>
 
-            <motion.aside
-              initial={fadeUp.initial}
-              animate={fadeUp.animate}
-              transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="hero-note hero-portrait"
-            >
-              {portraitAvailable ? (
-                <img
-                  src={portraitSrc}
-                  alt="Julian Dower portrait"
-                  className="portrait-image"
-                  onError={() => setPortraitAvailable(false)}
-                />
-              ) : (
-                <div className="portrait-fallback" aria-hidden="true" />
-              )}
-              <div className="portrait-caption">
-                <span className="eyebrow">Portrait</span>
-                <p>
-                  A cleaner personal anchor in the hero so the page feels less
-                  abstract.
-                </p>
-              </div>
-            </motion.aside>
-          </section>
+        <motion.aside
+          className="bento-card portrait-card tint-silver span-5"
+          initial={fadeUp.initial}
+          animate={fadeUp.animate}
+          transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {portraitAvailable ? (
+            <img
+              src={portraitSrc}
+              alt="Julian Dower portrait"
+              className="portrait-image"
+              onError={() => setPortraitAvailable(false)}
+            />
+          ) : (
+            <div className="portrait-fallback" aria-hidden="true" />
+          )}
+          <div className="portrait-caption">
+            <span className="eyebrow">Portrait</span>
+            <p>
+              Personal anchor first, then the work around it. This keeps the top of
+              the page from feeling like a detached intro block.
+            </p>
+          </div>
+        </motion.aside>
 
-          <motion.section
-            id="bento-feed"
-            ref={feedMarkerRef}
-            className="carousel-section"
-            aria-label="Portfolio feed"
-            initial={fadeUp.initial}
-            animate={fadeUp.animate}
-            transition={{ duration: 0.8, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="section-heading">
-              <span className="eyebrow">Scroll feed</span>
-              <h2>A single vertical stream that renews itself as you move through it.</h2>
-              <p>
-                The header stays fixed. The cards only advance when you scroll, then
-                recycle out of view and return later in the sequence.
-              </p>
-            </div>
-
-            <div className="feed-stack" role="list" aria-label="Infinite portfolio cards">
-              {cards.map((item) => renderCard(item))}
-            </div>
-
-            <div className="feed-tail">
-              <span className="eyebrow">Continuous</span>
-              <p>Keep scrolling. The stack keeps refreshing from below.</p>
-            </div>
-          </motion.section>
-        </div>
-      </div>
+        {loopCards.map((card, index) => renderCard(card, index))}
+      </section>
     </div>
   );
 };
