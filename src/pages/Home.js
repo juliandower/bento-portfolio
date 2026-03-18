@@ -14,7 +14,7 @@ const fadeUp = {
   animate: { opacity: 1, y: 0 },
 };
 
-const buildCarouselRows = () => [
+const buildCarouselColumns = () => [
   [
     {
       id: 'overview',
@@ -94,7 +94,7 @@ const buildCarouselRows = () => [
 ];
 
 const Home = () => {
-  const carouselRows = buildCarouselRows();
+  const carouselColumns = buildCarouselColumns();
   const [portraitAvailable, setPortraitAvailable] = useState(true);
   const portraitSrc = '/IMG_7920.JPG';
 
@@ -221,23 +221,23 @@ const Home = () => {
       >
         <div className="section-heading">
           <span className="eyebrow">Moving feed</span>
-          <h2>An infinite card rail with softer fades and more color in the hover state.</h2>
+          <h2>An infinite vertical card loop with softer fades and more color in the hover state.</h2>
           <p>
-            Hover any row to slow down and let the gradients fill. The motion stays
+            Hover any column to slow down and let the gradients fill. The motion stays
             minimal, but the page should feel alive now.
           </p>
         </div>
 
-        <div className="carousel-shell">
-          {carouselRows.map((row, index) => (
+        <div className="carousel-columns">
+          {carouselColumns.map((column, index) => (
             <div
-              key={`row-${index}`}
-              className="marquee-row"
-              style={{ '--marquee-duration': `${34 + index * 6}s` }}
+              key={`column-${index}`}
+              className="marquee-column"
+              style={{ '--marquee-duration': `${28 + index * 4}s` }}
             >
-              <div className={`marquee-track${index % 2 === 1 ? ' reverse' : ''}`}>
-                {[...row, ...row].map((item, itemIndex) => {
-                  const isDuplicate = itemIndex >= row.length;
+              <div className={`marquee-stack${index % 2 === 1 ? ' reverse' : ''}`}>
+                {[...column, ...column].map((item, itemIndex) => {
+                  const isDuplicate = itemIndex >= column.length;
 
                   return renderCard(
                     item,

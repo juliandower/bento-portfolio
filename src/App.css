@@ -361,56 +361,64 @@
   gap: 1rem;
 }
 
-.carousel-shell::before,
-.carousel-shell::after,
-.marquee-row::before,
-.marquee-row::after {
+.carousel-columns {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  min-height: 72rem;
+}
+
+.carousel-columns::before,
+.carousel-columns::after,
+.marquee-column::before,
+.marquee-column::after {
   content: '';
   position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 5rem;
+  left: 0;
+  right: 0;
+  height: 5rem;
   z-index: 4;
   pointer-events: none;
 }
 
-.carousel-shell::before,
-.marquee-row::before {
-  left: 0;
-  background: linear-gradient(90deg, var(--page-bg), rgba(238, 244, 247, 0));
+.carousel-columns::before,
+.marquee-column::before {
+  top: 0;
+  background: linear-gradient(180deg, var(--page-bg), rgba(238, 244, 247, 0));
 }
 
-.carousel-shell::after,
-.marquee-row::after {
-  right: 0;
-  background: linear-gradient(270deg, var(--page-bg), rgba(238, 244, 247, 0));
+.carousel-columns::after,
+.marquee-column::after {
+  bottom: 0;
+  background: linear-gradient(0deg, var(--page-bg), rgba(238, 244, 247, 0));
 }
 
-.marquee-row {
+.marquee-column {
   position: relative;
   overflow: hidden;
-  padding: 0.2rem 0;
+  min-height: 72rem;
+  border-radius: 1.8rem;
 }
 
-.marquee-track {
+.marquee-stack {
   display: flex;
-  align-items: stretch;
+  flex-direction: column;
   gap: 1rem;
-  width: max-content;
-  animation: marquee var(--marquee-duration, 36s) linear infinite;
+  animation: vertical-marquee var(--marquee-duration, 30s) linear infinite;
 }
 
-.marquee-track.reverse {
+.marquee-stack.reverse {
   animation-direction: reverse;
 }
 
-.marquee-row:hover .marquee-track {
+.marquee-column:hover .marquee-stack {
   animation-play-state: paused;
 }
 
 .marquee-card {
-  width: 22rem;
-  min-height: 18rem;
+  width: 100%;
+  min-height: 16rem;
   text-decoration: none;
   color: inherit;
   animation: breathe 8s ease-in-out infinite;
@@ -437,29 +445,28 @@
 }
 
 .rail-wide {
-  width: 30rem;
+  min-height: 20rem;
 }
 
 .rail-feature {
-  width: 26rem;
+  min-height: 18rem;
 }
 
 .rail-ribbon {
-  width: 34rem;
+  min-height: 18rem;
 }
 
 .rail-compact {
-  width: 20rem;
-  min-height: 15rem;
+  min-height: 13rem;
   justify-content: flex-end;
 }
 
 .rail-post {
-  width: 24rem;
+  min-height: 17rem;
 }
 
 .rail-quote {
-  width: 24rem;
+  min-height: 18rem;
   justify-content: space-between;
 }
 
@@ -648,12 +655,12 @@
   font-size: 0.95rem;
 }
 
-@keyframes marquee {
+@keyframes vertical-marquee {
   from {
-    transform: translateX(0);
+    transform: translateY(0);
   }
   to {
-    transform: translateX(calc(-50% - 0.5rem));
+    transform: translateY(calc(-50% - 0.5rem));
   }
 }
 
@@ -719,14 +726,13 @@
     align-items: flex-start;
   }
 
-  .marquee-card,
-  .rail-wide,
-  .rail-feature,
-  .rail-ribbon,
-  .rail-post,
-  .rail-quote,
-  .rail-compact {
-    width: 19rem;
+  .carousel-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-height: 58rem;
+  }
+
+  .marquee-column {
+    min-height: 58rem;
   }
 }
 
@@ -767,25 +773,27 @@
     padding: 1.2rem;
   }
 
-  .carousel-shell::before,
-  .carousel-shell::after,
-  .marquee-row::before,
-  .marquee-row::after {
-    width: 2rem;
+  .carousel-columns {
+    grid-template-columns: 1fr;
+    min-height: 44rem;
   }
 
-  .marquee-track {
+  .carousel-columns::before,
+  .carousel-columns::after,
+  .marquee-column::before,
+  .marquee-column::after {
+    height: 2rem;
+  }
+
+  .marquee-column {
+    min-height: 44rem;
+  }
+
+  .marquee-stack {
     gap: 0.75rem;
   }
 
-  .marquee-card,
-  .rail-wide,
-  .rail-feature,
-  .rail-ribbon,
-  .rail-post,
-  .rail-quote,
-  .rail-compact {
-    width: 16.5rem;
+  .marquee-card {
     min-height: 14rem;
   }
 
