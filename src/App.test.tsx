@@ -78,7 +78,7 @@ describe('App routes', () => {
       screen.getByRole('link', { name: /julian dower/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: /view wissenwert/i })
+      screen.getAllByRole('link', { name: /view wissenwert/i })[0]
     ).toHaveAttribute('href', 'https://github.com/juliandower/wissenwert');
   });
 

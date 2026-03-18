@@ -69,10 +69,6 @@ function App() {
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
-
-      <footer className="site-footer">
-        <p>Software, music, and design arranged into one long, quiet feed.</p>
-      </footer>
     </div>
   );
 }
