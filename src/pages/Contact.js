@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { FaGithub, FaSoundcloud } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { socialLinks } from '../data/siteContent';
+import { resetCardGlow, updateCardGlow } from '../utils/cardGlow';
 
 const contactItems = [
   {
@@ -26,6 +27,11 @@ const contactItems = [
 ];
 
 const Contact = () => {
+  const glowHandlers = {
+    onMouseMove: updateCardGlow,
+    onMouseLeave: resetCardGlow,
+  };
+
   return (
     <div className="page contact-page">
       <motion.section
@@ -42,7 +48,7 @@ const Contact = () => {
         </p>
       </motion.section>
 
-      <section className="bento-grid contact-grid">
+      <section className="bento-grid">
         {contactItems.map(({ label, detail, href, icon: Icon }, index) => (
           <motion.a
             key={label}
@@ -57,6 +63,7 @@ const Contact = () => {
               ease: [0.22, 1, 0.36, 1],
             }}
             className="bento-card contact-card span-4"
+            {...glowHandlers}
           >
             <span className="icon-wrap">
               <Icon size={20} />
@@ -71,7 +78,8 @@ const Contact = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
-          className="bento-card card-ribbon span-12"
+          className="bento-card ribbon-card tint-cloud span-12"
+          {...glowHandlers}
         >
           <div className="card-stack">
             <span className="eyebrow">Working style</span>

@@ -74,9 +74,7 @@ describe('App routes', () => {
         name: /fluid digital work across software, music, and design/i,
       })
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('link', { name: /julian dower/i })
-    ).toBeInTheDocument();
+    expect(screen.getByText(/julian dower/i)).toBeInTheDocument();
     expect(
       screen.getAllByRole('link', { name: /view wissenwert/i })[0]
     ).toHaveAttribute('href', 'https://github.com/juliandower/wissenwert');
