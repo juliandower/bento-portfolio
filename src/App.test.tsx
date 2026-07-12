@@ -77,7 +77,10 @@ describe('App routes', () => {
     expect(screen.getByText(/julian dower/i)).toBeInTheDocument();
     expect(
       screen.getAllByRole('link', { name: /view wissenwert/i })[0]
-    ).toHaveAttribute('href', 'https://github.com/juliandower/wissenwert');
+    ).toHaveAttribute('href', 'https://wissenwert.juliandower.com');
+    expect(
+      screen.getByRole('link', { name: /view wisp-anchor/i })
+    ).toHaveAttribute('href', 'https://wisp-anchor.juliandower.com');
   });
 
   test('redirects /portfolio to the home experience', () => {

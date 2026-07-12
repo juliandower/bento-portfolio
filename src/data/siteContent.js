@@ -9,9 +9,19 @@ export const featuredProject = {
   title: 'wissenwert',
   description:
     'An AI-generated quiz game with leverage and hedge mechanics, built to make financial curiosity feel playful instead of heavy.',
-  href: 'https://github.com/juliandower/wissenwert',
+  href: 'https://wissenwert.juliandower.com',
   linkLabel: 'View wissenwert',
-  liveNote: 'Live on wissenwert.vercel.app',
+  liveNote: 'Live on wissenwert.juliandower.com',
+};
+
+export const wispAnchorProject = {
+  eyebrow: 'New project',
+  title: 'wisp-anchor',
+  description:
+    'Create interactive mind maps from rough spoken-word ideas, turning an unstructured train of thought into something you can explore and shape.',
+  href: 'https://wisp-anchor.juliandower.com',
+  linkLabel: 'View wisp-anchor',
+  liveNote: 'Live on wisp-anchor.juliandower.com',
 };
 
 export const editorialPosts = [

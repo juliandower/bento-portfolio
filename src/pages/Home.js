@@ -1,12 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaArrowRight, FaGithub } from 'react-icons/fa';
+import { FaArrowRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import {
   editorialPosts,
   featuredProject,
   socialLinks,
   utilityCards,
+  wispAnchorProject,
 } from '../data/siteContent';
 import { resetCardGlow, updateCardGlow } from '../utils/cardGlow';
 
@@ -109,8 +110,31 @@ const Home = () => {
             rel="noopener noreferrer"
             className="inline-link"
           >
-            <FaGithub size={16} />
+            <FaArrowRight size={14} />
             {featuredProject.linkLabel}
+          </a>
+        </motion.article>
+
+        <motion.article
+          initial={reveal.initial}
+          animate={reveal.animate}
+          transition={{ duration: 0.7, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
+          whileHover={{ y: -6 }}
+          className="bento-card feature-card tint-frost span-4"
+          {...glowHandlers}
+        >
+          <span className="eyebrow">{wispAnchorProject.eyebrow}</span>
+          <h2>{wispAnchorProject.title}</h2>
+          <p>{wispAnchorProject.description}</p>
+          <span className="meta-note">{wispAnchorProject.liveNote}</span>
+          <a
+            href={wispAnchorProject.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-link"
+          >
+            <FaArrowRight size={14} />
+            {wispAnchorProject.linkLabel}
           </a>
         </motion.article>
 
