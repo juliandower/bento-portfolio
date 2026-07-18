@@ -5,68 +5,44 @@ export const socialLinks = {
 };
 
 export const featuredProject = {
-  eyebrow: 'Featured project',
   title: 'wissenwert',
+  tagline: 'A finance quiz where confidence has consequences.',
   description:
-    'An AI-generated quiz game with leverage and hedge mechanics, built to make financial curiosity feel playful instead of heavy.',
+    'A fast, playful way to test financial knowledge. Every answer asks for a confidence level, then turns conviction into risk through leverage and hedge mechanics.',
   href: 'https://wissenwert.juliandower.com',
-  linkLabel: 'View wissenwert',
-  liveNote: 'Live on wissenwert.juliandower.com',
+  linkLabel: 'Play wissenwert',
+  meta: [
+    { label: 'Format', value: 'Interactive quiz' },
+    { label: 'Focus', value: 'Learning through risk' },
+    { label: 'Status', value: 'Live' },
+  ],
 };
 
 export const wispAnchorProject = {
-  eyebrow: 'New project',
   title: 'wisp-anchor',
+  tagline: 'Talk it out. Watch it become a map.',
   description:
-    'Create interactive mind maps from rough spoken-word ideas, turning an unstructured train of thought into something you can explore and shape.',
+    'A voice-first thinking tool that catches an unstructured train of thought and turns it into an explorable mind map—so ideas can keep moving without getting lost.',
   href: 'https://wisp-anchor.juliandower.com',
-  linkLabel: 'View wisp-anchor',
-  liveNote: 'Live on wisp-anchor.juliandower.com',
+  linkLabel: 'Open wisp-anchor',
+  meta: [
+    { label: 'Format', value: 'Voice-to-map tool' },
+    { label: 'Focus', value: 'Thinking out loud' },
+    { label: 'Status', value: 'Live' },
+  ],
 };
 
-export const editorialPosts = [
+export const experiments = [
   {
-    id: 'software',
-    eyebrow: 'Software',
-    title: 'I like interfaces that explain themselves in motion.',
-    body:
-      'The best product surfaces feel obvious before they feel impressive. I tend to chase clear information hierarchy, responsive movement, and just enough tension in the layout to keep things alive.',
+    title: 'Sound sketches',
+    description: 'Loops, fragments and works in progress—music as a place to test pacing without a screen.',
   },
   {
-    id: 'music',
-    eyebrow: 'Music',
-    title: 'Sound keeps the visual work honest.',
-    body:
-      'A lot of my taste in spacing and pacing comes from production habits. Rhythm matters on the page too, especially when the goal is to make something calm without draining it of character.',
+    title: 'Small interfaces',
+    description: 'Compact tools, game mechanics and interactions that are useful enough to earn their personality.',
   },
   {
-    id: 'design',
-    eyebrow: 'Design',
-    title: 'Minimal does not mean neutral.',
-    body:
-      'I prefer gradients that barely announce themselves, typography with a point of view, and layouts that breathe. Clean is useful when it still leaves fingerprints.',
-  },
-];
-
-export const utilityCards = [
-  {
-    eyebrow: 'Currently into',
-    title: 'Fluid layout systems, game mechanics, and small interactions.',
-    tone: 'muted',
-  },
-  {
-    eyebrow: 'Topics',
-    title: 'Visual art, German, EVs, and software that feels tactile.',
-    tone: 'soft',
-  },
-  {
-    eyebrow: 'Elsewhere',
-    title: 'GitHub for code, SoundCloud for sketches, email for everything direct.',
-    tone: 'accent',
-  },
-  {
-    eyebrow: 'Availability',
-    title: 'Open to projects where product taste matters as much as implementation.',
-    tone: 'muted',
+    title: 'Learning systems',
+    description: 'Language, finance and visual thinking—subjects that get better when the interface responds to you.',
   },
 ];

@@ -1,96 +1,50 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { FaGithub, FaSoundcloud } from 'react-icons/fa';
-import { MdEmail } from 'react-icons/md';
+import { motion, useReducedMotion } from 'framer-motion';
+import { FaArrowRight } from 'react-icons/fa';
 import { socialLinks } from '../data/siteContent';
-import { resetCardGlow, updateCardGlow } from '../utils/cardGlow';
 
 const contactItems = [
-  {
-    label: 'Email',
-    detail: 'dower.julian@gmail.com',
-    href: socialLinks.email,
-    icon: MdEmail,
-  },
-  {
-    label: 'GitHub',
-    detail: 'github.com/juliandower',
-    href: socialLinks.github,
-    icon: FaGithub,
-  },
-  {
-    label: 'SoundCloud',
-    detail: 'soundcloud.com/yungjuan420',
-    href: socialLinks.soundcloud,
-    icon: FaSoundcloud,
-  },
+  { label: 'Email', detail: 'dower.julian@gmail.com', href: socialLinks.email },
+  { label: 'GitHub', detail: 'github.com/juliandower', href: socialLinks.github },
+  { label: 'SoundCloud', detail: 'soundcloud.com/yungjuan420', href: socialLinks.soundcloud },
 ];
 
 const Contact = () => {
-  const glowHandlers = {
-    onMouseMove: updateCardGlow,
-    onMouseLeave: resetCardGlow,
-  };
+  const reduceMotion = useReducedMotion();
 
   return (
-    <div className="page contact-page">
+    <div className="contact-page">
       <motion.section
-        initial={{ opacity: 0, y: 24 }}
+        className="contact-intro"
+        initial={{ opacity: 0, y: reduceMotion ? 0 : 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-        className="contact-hero"
+        transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
       >
-        <span className="eyebrow">Contact</span>
-        <h1>Reach out if the project needs both taste and build quality.</h1>
-        <p className="lead">
-          The cleanest route is email. GitHub and SoundCloud are here too if you want
-          the surrounding context.
-        </p>
+        <span className="section-index">CONTACT / DIRECT LINE</span>
+        <h1>Let’s make something<br /><em>with a pulse.</em></h1>
+        <p>The best route is email. Tell me what you’re making, what feels unresolved, and where you want it to go.</p>
       </motion.section>
 
-      <section className="bento-grid">
-        {contactItems.map(({ label, detail, href, icon: Icon }, index) => (
-          <motion.a
+      <section className="contact-routes" aria-label="Ways to get in touch">
+        {contactItems.map(({ label, detail, href }, index) => (
+          <a
             key={label}
             href={href}
             target={href.startsWith('mailto:') ? undefined : '_blank'}
             rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.75,
-              delay: 0.12 + index * 0.08,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="bento-card contact-card span-4"
-            {...glowHandlers}
+            className="contact-route"
           >
-            <span className="icon-wrap">
-              <Icon size={20} />
-            </span>
-            <span className="eyebrow">{label}</span>
-            <h2>{detail}</h2>
-            <span className="inline-link">Open</span>
-          </motion.a>
+            <span>0{index + 1} / {label}</span>
+            <strong>{detail}</strong>
+            <FaArrowRight aria-hidden="true" />
+          </a>
         ))}
-
-        <motion.article
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
-          className="bento-card ribbon-card tint-cloud span-12"
-          {...glowHandlers}
-        >
-          <div className="card-stack">
-            <span className="eyebrow">Working style</span>
-            <h2>Thoughtful, direct, and detail-heavy where it counts.</h2>
-            <p>
-              I care about structure, rhythm, and reducing visual noise without
-              flattening the personality out of the work.
-            </p>
-          </div>
-        </motion.article>
       </section>
+
+      <footer className="contact-footer">
+        <span>© {new Date().getFullYear()} Julian Dower</span>
+        <span>Software · Sound · Systems</span>
+      </footer>
     </div>
   );
 };

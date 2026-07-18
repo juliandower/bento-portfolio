@@ -20,6 +20,7 @@ jest.mock('framer-motion', () => {
   ]);
 
   return {
+    useReducedMotion: () => false,
     motion: new Proxy(
       {},
       {
@@ -66,20 +67,20 @@ describe('App routes', () => {
     window.history.pushState({}, '', '/');
   });
 
-  test('renders the home page with Julian Dower and the wissenwert link', () => {
+  test('renders the signal studio home page and featured work', () => {
     renderApp();
 
     expect(
       screen.getByRole('heading', {
-        name: /fluid digital work across software, music, and design/i,
+        name: /i build digital things with a pulse/i,
       })
     ).toBeInTheDocument();
-    expect(screen.getByText(/julian dower/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/julian dower/i).length).toBeGreaterThan(0);
     expect(
-      screen.getAllByRole('link', { name: /view wissenwert/i })[0]
+      screen.getByRole('link', { name: /play wissenwert/i })
     ).toHaveAttribute('href', 'https://wissenwert.juliandower.com');
     expect(
-      screen.getByRole('link', { name: /view wisp-anchor/i })
+      screen.getByRole('link', { name: /open wisp-anchor/i })
     ).toHaveAttribute('href', 'https://wisp-anchor.juliandower.com');
   });
 
@@ -90,7 +91,7 @@ describe('App routes', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: /fluid digital work across software, music, and design/i,
+        name: /i build digital things with a pulse/i,
       })
     ).toBeInTheDocument();
   });
@@ -102,11 +103,11 @@ describe('App routes', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: /reach out if the project needs both taste and build quality/i,
+        name: /let’s make something with a pulse/i,
       })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: /dower\.julian@gmail\.com/i })
-    ).toBeInTheDocument();
+      screen.getByRole('link', { name: /email dower\.julian@gmail\.com/i })
+    ).toHaveAttribute('href', 'mailto:dower.julian@gmail.com');
   });
 });
