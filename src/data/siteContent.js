@@ -6,9 +6,8 @@ export const socialLinks = {
 
 export const featuredProject = {
   title: 'wissenwert',
-  tagline: 'A finance quiz where confidence has consequences.',
   description:
-    'A fast, playful way to test financial knowledge. Every answer asks for a confidence level, then turns conviction into risk through leverage and hedge mechanics.',
+    'A finance quiz that turns your confidence into risk. Test your knowledge with leverage and hedge mechanics.',
   href: 'https://wissenwert.juliandower.com',
   linkLabel: 'Play wissenwert',
   meta: [
@@ -20,9 +19,8 @@ export const featuredProject = {
 
 export const wispAnchorProject = {
   title: 'wisp-anchor',
-  tagline: 'Talk it out. Watch it become a map.',
   description:
-    'A voice-first thinking tool that catches an unstructured train of thought and turns it into an explorable mind map—so ideas can keep moving without getting lost.',
+    'A voice-first thinking tool that turns unstructured thoughts into an explorable mind map.',
   href: 'https://wisp-anchor.juliandower.com',
   linkLabel: 'Open wisp-anchor',
   meta: [
@@ -35,14 +33,14 @@ export const wispAnchorProject = {
 export const experiments = [
   {
     title: 'Sound sketches',
-    description: 'Loops, fragments and works in progress—music as a place to test pacing without a screen.',
+    description: 'Music production, loops and works in progress.',
   },
   {
     title: 'Small interfaces',
-    description: 'Compact tools, game mechanics and interactions that are useful enough to earn their personality.',
+    description: 'Compact tools, game mechanics and interactions.',
   },
   {
     title: 'Learning systems',
-    description: 'Language, finance and visual thinking—subjects that get better when the interface responds to you.',
+    description: 'Experiments in language, finance and visual thinking.',
   },
 ];

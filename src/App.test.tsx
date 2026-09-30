@@ -67,12 +67,12 @@ describe('App routes', () => {
     window.history.pushState({}, '', '/');
   });
 
-  test('renders the signal studio home page and featured work', () => {
+  test('renders the portfolio home page and featured work', () => {
     renderApp();
 
     expect(
       screen.getByRole('heading', {
-        name: /i build digital things with a pulse/i,
+        name: /julian dower/i,
       })
     ).toBeInTheDocument();
     expect(screen.getAllByText(/julian dower/i).length).toBeGreaterThan(0);
@@ -91,7 +91,7 @@ describe('App routes', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: /i build digital things with a pulse/i,
+        name: /julian dower/i,
       })
     ).toBeInTheDocument();
   });
@@ -103,7 +103,7 @@ describe('App routes', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: /let’s make something with a pulse/i,
+        name: /let’s talk/i,
       })
     ).toBeInTheDocument();
     expect(
