@@ -1,0 +1,253 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-30T11:03:55.646531+00:00",
+  "title": "Design System: Julian Dower Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "page": {
+        "role": "neutral",
+        "displayName": "Warm Charcoal",
+        "tonalRamp": [
+          "oklch(15% 0.0032 17.41)",
+          "oklch(26% 0.0032 17.41)",
+          "oklch(38% 0.0032 17.41)",
+          "oklch(49% 0.0032 17.41)",
+          "oklch(61% 0.0032 17.41)",
+          "oklch(72% 0.0032 17.41)",
+          "oklch(84% 0.0032 17.41)",
+          "oklch(95% 0.0032 17.41)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Warm Off-white",
+        "tonalRamp": [
+          "oklch(15% 0.0114 71.90)",
+          "oklch(26% 0.0114 71.90)",
+          "oklch(38% 0.0114 71.90)",
+          "oklch(49% 0.0114 71.90)",
+          "oklch(61% 0.0114 71.90)",
+          "oklch(72% 0.0114 71.90)",
+          "oklch(84% 0.0114 71.90)",
+          "oklch(95% 0.0114 71.90)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Warm Muted Gray",
+        "tonalRamp": [
+          "oklch(15% 0.0139 41.17)",
+          "oklch(26% 0.0139 41.17)",
+          "oklch(38% 0.0139 41.17)",
+          "oklch(49% 0.0139 41.17)",
+          "oklch(61% 0.0139 41.17)",
+          "oklch(72% 0.0139 41.17)",
+          "oklch(84% 0.0139 41.17)",
+          "oklch(95% 0.0139 41.17)"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Sunset Pink",
+        "tonalRamp": [
+          "oklch(15% 0.1119 354.28)",
+          "oklch(26% 0.1119 354.28)",
+          "oklch(38% 0.1119 354.28)",
+          "oklch(49% 0.1119 354.28)",
+          "oklch(61% 0.1119 354.28)",
+          "oklch(72% 0.1119 354.28)",
+          "oklch(84% 0.1119 354.28)",
+          "oklch(95% 0.1119 354.28)"
+        ]
+      },
+      "orange": {
+        "role": "secondary",
+        "displayName": "Sunset Orange",
+        "tonalRamp": [
+          "oklch(15% 0.1362 68.51)",
+          "oklch(26% 0.1362 68.51)",
+          "oklch(38% 0.1362 68.51)",
+          "oklch(49% 0.1362 68.51)",
+          "oklch(61% 0.1362 68.51)",
+          "oklch(72% 0.1362 68.51)",
+          "oklch(84% 0.1362 68.51)",
+          "oklch(95% 0.1362 68.51)"
+        ]
+      },
+      "coral": {
+        "role": "secondary",
+        "displayName": "Sunset Coral",
+        "tonalRamp": [
+          "oklch(15% 0.1485 29.09)",
+          "oklch(26% 0.1485 29.09)",
+          "oklch(38% 0.1485 29.09)",
+          "oklch(49% 0.1485 29.09)",
+          "oklch(61% 0.1485 29.09)",
+          "oklch(72% 0.1485 29.09)",
+          "oklch(84% 0.1485 29.09)",
+          "oklch(95% 0.1485 29.09)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Charcoal Divider",
+        "tonalRamp": [
+          "oklch(15% 0.0122 41.73)",
+          "oklch(26% 0.0122 41.73)",
+          "oklch(38% 0.0122 41.73)",
+          "oklch(49% 0.0122 41.73)",
+          "oklch(61% 0.0122 41.73)",
+          "oklch(72% 0.0122 41.73)",
+          "oklch(84% 0.0122 41.73)",
+          "oklch(95% 0.0122 41.73)"
+        ]
+      },
+      "contact-stroke": {
+        "role": "neutral",
+        "displayName": "Warm Sunset Stroke",
+        "tonalRamp": [
+          "oklch(15% 0.0668 29.51)",
+          "oklch(26% 0.0668 29.51)",
+          "oklch(38% 0.0668 29.51)",
+          "oklch(49% 0.0668 29.51)",
+          "oklch(61% 0.0668 29.51)",
+          "oklch(72% 0.0668 29.51)",
+          "oklch(84% 0.0668 29.51)",
+          "oklch(95% 0.0668 29.51)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero name."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Project headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Project descriptions."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Action links."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "hero-arch",
+        "value": "transform 650ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Translate hero arch 10px on hover or focus within; reduced motion removes interpolation."
+      },
+      {
+        "name": "anchor-scroll",
+        "value": "smooth",
+        "purpose": "Anchor scrolling, switched to auto for reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-desktop",
+        "value": "1000px"
+      },
+      {
+        "name": "mobile",
+        "value": "700px"
+      },
+      {
+        "name": "narrow-mobile",
+        "value": "360px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Text action",
+      "kind": "button",
+      "refersTo": "text-button",
+      "description": "Direct underlined link with a pink arrow.",
+      "html": "<a class=\"ds-text-action\" href=\"#work\">Explore my work<svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M1 8h12M8 2l6 6-6 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/></svg></a>",
+      "css": ".ds-text-action {font-family:var(--sans);display:inline-flex;align-items:center;gap:2rem;min-height:48px;padding:0.7rem 0;border-bottom:1px solid var(--ink);color:var(--ink);font-size:.95rem;font-weight:550;text-decoration:none;} .ds-text-action svg{width:.85rem;color:var(--accent);} .ds-text-action:hover{color:var(--accent);border-color:var(--accent);} .ds-text-action:focus-visible{outline:2px solid var(--accent);outline-offset:6px;}"
+    },
+    {
+      "name": "Project link",
+      "kind": "button",
+      "refersTo": "project-link",
+      "description": "Direct underlined link with a pink arrow.",
+      "html": "<a class=\"ds-project-link\" href=\"#work\">Visit project<svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M1 8h12M8 2l6 6-6 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/></svg></a>",
+      "css": ".ds-project-link {font-family:var(--sans);display:inline-flex;align-items:center;gap:2rem;min-height:48px;padding:0.9rem 0;border-bottom:1px solid var(--ink);color:var(--ink);font-size:.95rem;font-weight:550;text-decoration:none;} .ds-project-link svg{width:.85rem;color:var(--accent);} .ds-project-link:hover{color:var(--accent);border-color:var(--accent);} .ds-project-link:focus-visible{outline:2px solid var(--accent);outline-offset:6px;}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Inline navigation with a pink active underline.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Primary\"><a class=\"ds-active\" href=\"#work\" aria-current=\"page\">Work</a><a href=\"#about\">About</a><a href=\"#contact\">Contact</a></nav>",
+      "css": ".ds-nav{font-family:var(--sans);display:flex;gap:clamp(1rem,3vw,3rem);background:var(--page);} .ds-nav a{display:inline-flex;align-items:center;min-height:44px;color:var(--muted);font-size:.9rem;font-weight:550;text-decoration:none;} .ds-nav a:hover,.ds-nav .ds-active{color:var(--ink);} .ds-nav .ds-active{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:.6rem;} .ds-nav a:focus-visible{outline:2px solid var(--accent);outline-offset:6px;}"
+    },
+    {
+      "name": "Contact route",
+      "kind": "custom",
+      "refersTo": "contact-route",
+      "description": "Divided full-width destination link.",
+      "html": "<a class=\"ds-contact-route\" href=\"mailto:dower.julian@gmail.com\"><span>Email</span><strong>dower.julian@gmail.com</strong><svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M1 8h12M8 2l6 6-6 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/></svg></a>",
+      "css": ".ds-contact-route{font-family:var(--sans);display:grid;grid-template-columns:.35fr 1.65fr auto;gap:2rem;align-items:center;padding:2rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none;} .ds-contact-route span{color:var(--muted);font-size:.9rem;} .ds-contact-route strong{overflow-wrap:anywhere;font-size:clamp(1.1rem,2.5vw,2.5rem);font-weight:500;letter-spacing:-.025em;} .ds-contact-route svg{width:1rem;color:var(--accent);} .ds-contact-route:hover strong{color:var(--accent);} .ds-contact-route:focus-visible{outline:2px solid var(--accent);outline-offset:6px;} @media(max-width:700px){.ds-contact-route{grid-template-columns:1fr auto;gap:1rem;padding:1.5rem 0;} .ds-contact-route span{grid-column:1/-1;}}"
+    },
+    {
+      "name": "Illustrative quiz preview",
+      "kind": "card",
+      "refersTo": "quiz-visual",
+      "description": "Static project illustration; selected answer is not an interactive form.",
+      "html": "<figure class=\"ds-quiz\"><div class=\"ds-quiz-inner\"><div class=\"ds-topline\"><strong>wissenwert</strong><span>Round 4</span></div><div class=\"ds-quiz-content\"><p>Which signal points to a tightening monetary policy?</p><div class=\"ds-answer\">Falling base rates</div><div class=\"ds-answer ds-selected\">Rising base rates</div><div class=\"ds-answer\">Wider money supply</div></div></div><figcaption>Illustrative interface</figcaption></figure>",
+      "css": ".ds-quiz{font-family:var(--sans);margin:0;padding:2.25rem 2.25rem 1rem;background:var(--sunset);} .ds-quiz-inner{background:var(--page);color:var(--ink);} .ds-topline{display:flex;justify-content:space-between;gap:1rem;padding:1.1rem 1.4rem;border-bottom:1px solid var(--line);font-size:.9rem;} .ds-topline span{color:var(--muted);font-size:.75rem;} .ds-quiz-content{padding:1.6rem 1.4rem 2rem;} .ds-quiz-content p{max-width:22ch;margin:0 0 1.5rem;font-size:clamp(1.1rem,1.7vw,1.7rem);font-weight:550;line-height:1.35;letter-spacing:-.025em;} .ds-answer{margin-top:.5rem;padding:.8rem 1rem;border:1px solid var(--line);color:var(--muted);font-size:.8rem;} .ds-selected{background:var(--accent);border-color:var(--accent);color:var(--page);font-weight:650;} .ds-quiz figcaption{margin-top:.8rem;color:#402323;font-size:.75rem;text-align:right;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Sunset Bauhaus Poster",
+    "overview": "Warm charcoal, off-white type and sunset pink-orange geometry create a minimal, composed portfolio. A single geometric sans carries both the large name and concise project evidence. The system gives hiring teams clear reading paths and direct links while circles, open arches and curved connections provide its visual identity.\n\nFlat rectangular planes support the content; expressive curves belong to illustrations and brand geometry. Color occupies deliberate fields rather than ambient glow. Motion is confined to a small shift of the hero arch and respects reduced-motion preferences.",
+    "keyCharacteristics": [
+      "Dark warm surfaces and restrained off-white typography.",
+      "Sunset gradients, solid circles, open arches and curved paths.",
+      "One self-hosted geometric sans with tight large-type spacing.",
+      "Flat, square content surfaces and fine dividing lines.",
+      "Concise factual copy and direct underlined actions."
+    ],
+    "rules": [
+      {
+        "name": "The Color Field Rule",
+        "body": "Apply the sunset gradient to bounded geometric or content fields; retain solid charcoal behind primary reading surfaces.",
+        "section": "colors"
+      },
+      {
+        "name": "The Single Voice Rule",
+        "body": "Use Manrope throughout; express hierarchy through scale, weight, spacing and color rather than additional type families.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Surface Rule",
+        "body": "Keep content surfaces flat; use color, geometry and fine dividers to establish separation.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do align content and the fixed header to the shared fluid gutter.",
+      "Do use solid geometric fields, circles, open arches and curved connections.",
+      "Do preserve concise project descriptions and direct visible links.",
+      "Do preserve visible keyboard focus and reduced-motion behavior.",
+      "Do label project interface illustrations as illustrative."
+    ],
+    "donts": [
+      "Don't add shadows, blur or rounded content cards to this flat system.",
+      "Don't add decorative taglines or repeated promotional labels.",
+      "Don't introduce another display typeface.",
+      "Don't let artwork overlap reading text on mobile."
+    ]
+  }
+}

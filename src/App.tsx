@@ -7,20 +7,20 @@ import Home from './pages/Home';
 function App() {
   return (
     <div className="site-shell">
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <header className="site-header">
         <NavLink to="/" className="brand-mark" aria-label="Julian Dower — Home">
-          <span className="brand-pulse" aria-hidden="true" />
-          JD / SIGNAL STUDIO
+          <span className="brand-symbol" aria-hidden="true"><i /><i /></span>
+          Julian Dower
         </NavLink>
         <nav className="site-nav" aria-label="Primary navigation">
           <NavLink to="/" end>Work</NavLink>
           <a href="/#about-title">About</a>
           <NavLink to="/contact">Contact</NavLink>
         </nav>
-        <span className="header-status"><i aria-hidden="true" /> Available for the right project</span>
       </header>
 
-      <main>
+      <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/portfolio" element={<Navigate to="/" replace />} />
