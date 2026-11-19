@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { socialLinks } from '../data/siteContent';
+import ContactOrb from '../ContactOrb';
 
 const contactItems = [
   { label: 'Email', detail: 'dower.julian@gmail.com', href: socialLinks.email },
@@ -13,9 +14,9 @@ const Contact = () => {
   return (
     <div className="contact-page">
       <section className="contact-intro">
+        <ContactOrb className="contact-sun" />
         <h1>Let’s talk<span>.</span></h1>
         <p>For roles, projects or collaborations, email is the best place to start.</p>
-        <div className="contact-sun" aria-hidden="true" />
       </section>
 
       <section className="contact-routes" aria-label="Ways to get in touch">

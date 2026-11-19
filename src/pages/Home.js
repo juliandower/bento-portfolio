@@ -3,6 +3,7 @@ import { FaArrowDown, FaArrowRight, FaArrowUp, FaArrowUpRightFromSquare } from '
 import { Link } from 'react-router-dom';
 import { experiments, featuredProject, socialLinks, wispAnchorProject } from '../data/siteContent';
 import Atmosphere from '../Atmosphere';
+import ContactOrb from '../ContactOrb';
 
 const ProjectLink = ({ project }) => (
   <a href={project.href} target="_blank" rel="noopener noreferrer" className="project-link">
@@ -41,19 +42,21 @@ const Hero = () => {
   const introRef = useRef(null);
 
   return (
-    <section className="hero" aria-labelledby="hero-title">
-      <Atmosphere introRef={introRef} />
-      <div className="hero-copy">
-        <div className="hero-intro" ref={introRef}>
-          <div className="hero-availability"><span /> Independent creative developer</div>
-          <h1 id="hero-title">Julian<br />Dower<span>.</span></h1>
-          <p className="hero-discipline">Product thinking, interface design &amp; code.</p>
+    <div className="hero-stage" id="home" tabIndex={-1}>
+      <section className="hero" aria-labelledby="hero-title">
+        <Atmosphere introRef={introRef} />
+        <div className="hero-copy">
+          <div className="hero-intro" ref={introRef}>
+            <div className="hero-availability"><span /> Independent creative developer</div>
+            <h1 id="hero-title">Julian<br />Dower<span>.</span></h1>
+            <p className="hero-discipline">Product thinking, interface design &amp; code.</p>
+          </div>
+          <Link to="/#work-title" className="hero-button">Explore my work <span><FaArrowDown aria-hidden="true" /></span></Link>
         </div>
-        <a href="#work-title" className="hero-button">Explore my work <span><FaArrowDown aria-hidden="true" /></span></a>
-      </div>
-      <div className="hero-side-note" aria-hidden="true"><span>IDEAS INTO INTERFACES</span><i /></div>
-      <div className="hero-bottom"><span>PORTFOLIO / {new Date().getFullYear()}</span><span>SCROLL TO EXPLORE <FaArrowDown /></span></div>
-    </section>
+        <div className="hero-side-note" aria-hidden="true"><span>IDEAS INTO INTERFACES</span><i /></div>
+        <div className="hero-bottom"><span>PORTFOLIO / {new Date().getFullYear()}</span><span>SCROLL TO EXPLORE <FaArrowDown /></span></div>
+      </section>
+    </div>
   );
 };
 
@@ -61,7 +64,7 @@ const Home = () => (
   <div className="home-page">
     <Hero />
     <section className="work-section" aria-labelledby="work-title">
-      <div className="section-heading"><div><span className="section-label">A SELECTION OF PROJECTS</span><h2 id="work-title">Made with intention.</h2></div><p>A couple of ideas, brought to life.</p></div>
+      <div className="section-heading"><div><span className="section-label">A SELECTION OF PROJECTS</span><h2 id="work-title" tabIndex={-1}>Made with intention.</h2></div><p>A couple of ideas, brought to life.</p></div>
       <div className="project-grid">
         <article className="project project-wissenwert"><QuizVisual /><div className="project-copy"><div className="project-meta"><span>INTERACTIVE QUIZ</span><span>LIVE PROJECT ↗</span></div><h3>{featuredProject.title}</h3><p className="project-description">{featuredProject.description}</p><ProjectLink project={featuredProject} /></div></article>
         <article className="project project-wisp"><MapVisual /><div className="project-copy"><div className="project-meta"><span>VOICE-TO-MAP TOOL</span><span>LIVE PROJECT ↗</span></div><h3>{wispAnchorProject.title}</h3><p className="project-description">{wispAnchorProject.description}</p><ProjectLink project={wispAnchorProject} /></div></article>
@@ -70,11 +73,11 @@ const Home = () => (
 
     <section className="about-section" aria-labelledby="about-title">
       <div className="about-heading"><span className="section-label">A LITTLE ABOUT ME</span><h2 id="about-title">Curiosity, made tangible.</h2></div>
-      <div className="about-copy"><p className="about-lead">I make focused digital products, from first sketch to live release.</p><div><p>I’m an independent builder working across product thinking, interface design and code.</p><p>Music production shapes my approach. I’m interested in tools that help people think, learn and make sense of messy inputs.</p></div></div>
+      <div className="about-copy"><p className="about-lead">I make focused digital products, from first sketch to live release.</p><div><p>I’m an independent builder working across product thinking, interface design and code.</p><p>Music production shapes my approach. I’m interested in tools that help people think, learn and make sense of messy inputs.</p><Link to="/cv" className="project-link">View my CV <FaArrowRight aria-hidden="true" /></Link></div></div>
       <div className="experiment-list" aria-label="Other interests">{experiments.map((item) => <article className="experiment" key={item.title}><h3>{item.title}</h3><p>{item.description}</p></article>)}</div>
     </section>
 
-    <section className="contact-cta" aria-labelledby="contact-title"><div className="contact-glow" aria-hidden="true" /><div className="contact-inner"><span className="section-label">HAVE SOMETHING IN MIND?</span><h2 id="contact-title">Let’s make<br />something good.</h2><a href={socialLinks.email} className="email-link">Get in touch <FaArrowRight aria-hidden="true" /></a><footer className="footer-line"><span>© {new Date().getFullYear()} Julian Dower</span><div><a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a><a href={socialLinks.github} target="_blank" rel="noopener noreferrer">GitHub</a><a href={socialLinks.soundcloud} target="_blank" rel="noopener noreferrer">SoundCloud</a><Link to="/contact">Contact</Link><a href="#main-content" aria-label="Back to top"><FaArrowUp aria-hidden="true" /></a></div></footer></div></section>
+    <section className="contact-cta" aria-labelledby="contact-title"><ContactOrb className="contact-glow" distance={9} /><div className="contact-inner"><span className="section-label">HAVE SOMETHING IN MIND?</span><h2 id="contact-title" tabIndex={-1}>Let’s make<br />something good.</h2><a href={socialLinks.email} className="email-link">Get in touch <FaArrowRight aria-hidden="true" /></a><footer className="footer-line"><span>© {new Date().getFullYear()} Julian Dower</span><div><a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a><a href={socialLinks.github} target="_blank" rel="noopener noreferrer">GitHub</a><a href={socialLinks.soundcloud} target="_blank" rel="noopener noreferrer">SoundCloud</a><Link to="/contact">Contact details</Link><Link to="/#home" aria-label="Back to top"><FaArrowUp aria-hidden="true" /></Link></div></footer></div></section>
   </div>
 );
 export default Home;
