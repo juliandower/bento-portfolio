@@ -1,6 +1,7 @@
 export const socialLinks = {
   email: 'mailto:dower.julian@gmail.com',
   github: 'https://github.com/juliandower',
+  linkedin: 'https://www.linkedin.com/in/julian-dower',
   soundcloud: 'https://soundcloud.com/yungjuan420',
 };
 

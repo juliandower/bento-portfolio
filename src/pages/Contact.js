@@ -5,6 +5,7 @@ import { socialLinks } from '../data/siteContent';
 const contactItems = [
   { label: 'Email', detail: 'dower.julian@gmail.com', href: socialLinks.email },
   { label: 'GitHub', detail: 'github.com/juliandower', href: socialLinks.github },
+  { label: 'LinkedIn', detail: 'Julian Dower', href: socialLinks.linkedin },
   { label: 'SoundCloud', detail: 'soundcloud.com/yungjuan420', href: socialLinks.soundcloud },
 ];
 

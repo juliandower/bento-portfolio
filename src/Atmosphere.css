@@ -1,0 +1,91 @@
+.atmosphere-sky,
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.atmosphere-sky {
+  background:
+    radial-gradient(ellipse at 67% -12%, #79b0d766, transparent 55%),
+    linear-gradient(180deg, #22649b 0%, #4188b7 49%, #70aeca 100%);
+}
+
+.atmosphere {
+  background:
+    radial-gradient(ellipse 29% 25% at 77% 66%, #f2f8fb 0%, #d5e6f0 35%, transparent 72%),
+    radial-gradient(ellipse 45% 22% at 82% 88%, #edf7fb 0%, #a9c9d9 46%, transparent 75%);
+}
+
+.atmosphere--ready {
+  z-index: 3;
+  background: none;
+}
+
+.atmosphere canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+}
+
+.atmosphere--ready canvas {
+  visibility: visible;
+}
+
+.hero .hero-copy {
+  z-index: auto;
+}
+
+.hero-intro {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 100%;
+}
+
+.hero .hero-copy .hero-button {
+  position: relative;
+  z-index: 4;
+  background: linear-gradient(135deg, #437faac9, #164b72e6);
+}
+
+.hero .hero-copy .hero-button:hover {
+  background: linear-gradient(135deg, #3c7aabeb, #15476fff);
+}
+
+.hero:has(.hero-button:focus-visible) .atmosphere--ready {
+  z-index: 0;
+}
+
+.hero .hero-side-note,
+.hero .hero-bottom {
+  z-index: 4;
+  text-shadow: 0 1px 4px #143e63, 0 2px 7px #143e6399;
+}
+
+@media (max-width: 749px) {
+  .atmosphere {
+    background:
+      radial-gradient(ellipse 35% 20% at 89% 74%, #f2f8fb 0%, #d5e6f0 35%, transparent 72%),
+      radial-gradient(ellipse 64% 20% at 91% 91%, #edf7fb 0%, #a9c9d9 46%, transparent 75%);
+  }
+
+  .atmosphere--ready {
+    background: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .atmosphere-sky,
+  .atmosphere {
+    visibility: hidden;
+  }
+
+  .atmosphere--ready canvas {
+    visibility: hidden;
+  }
+}

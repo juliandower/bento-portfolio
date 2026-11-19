@@ -15,7 +15,7 @@ A personal portfolio presenting Julian's software projects and creative work, wi
 Existing React app with home, /portfolio redirect, and contact routes. Preserve project destinations and email, GitHub and SoundCloud links. Run locally for review before any commit to the primary branch.
 
 ## Brand Commitments
-Julian requests a dark palette with a sunset pink-orange gradient, solid geometric shapes, curved lines, clean minimal Bauhaus design, and fewer unnecessary taglines.
+Julian requests a clean, modern portfolio inspired by Frutiger Aero: realistic clouds, sky blues, liquid glass and atmospheric graphical effects. Keep the work easy to scan and preserve concise factual copy.
 
 ## Evidence on Hand
 src/data/siteContent.js contains two featured projects, wissenwert and wisp-anchor, project descriptions and links, plus creative interests. Existing source describes independent product, interface and software work. Do not invent employment history, credentials, results or testimonials.
