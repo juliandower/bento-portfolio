@@ -3,24 +3,21 @@ import { createCloudPhysics } from './cloudPhysics';
 // Successive banks enter from the right, with each interval keyed to scroll.
 // Sky coordinates start at the lower left.
 const distantBanks = [
-  { wide: [.12, .89, .18, .110], narrow: [.10, .93, .29, .083], arrival: [.05, .69], opacity: .84, haze: .36 },
-  { wide: [.36, .52, .20, .133], narrow: [.38, .56, .40, .117], arrival: [.18, .86], opacity: .83, haze: .34 },
-  { wide: [.67, .86, .193, .137], narrow: [.66, .81, .33, .108], arrival: [0, .67], initial: [1.02, .32], opacity: .98, haze: .12 },
-  { wide: [.94, .56, .16, .118], narrow: [.96, .51, .30, .095], arrival: [.26, .83], opacity: .92, haze: .21 },
-  { wide: [.16, .035, .23, .106], narrow: [.10, .035, .40, .112], arrival: [.27, .96], opacity: .90, haze: .33 },
-  { wide: [.64, .20, .24, .151], narrow: [.67, .23, .40, .146], arrival: [0, .81], initial: [1.12, .40], opacity: .98, haze: .10 },
-  { wide: [.07, .38, .15, .113], narrow: [.03, .35, .27, .098], arrival: [.33, 1], opacity: .73, haze: .45 },
-  { wide: [.40, .74, .15, .088], narrow: [.25, .77, .33, .084], arrival: [.40, .98], opacity: .76, haze: .29 },
+  { wide: [.20, .89, .23, .114], narrow: [.10, .93, .34, .088], arrival: [.08, .77], opacity: .81, haze: .41 },
+  { wide: [.81, .75, .20, .159], narrow: [.94, .79, .35, .116], arrival: [0, .68], initial: [1.01, .86], opacity: .98, haze: .08 },
+  { wide: [.95, .43, .18, .128], narrow: [.96, .47, .31, .104], arrival: [.16, .85], opacity: .91, haze: .23 },
+  { wide: [.21, .04, .25, .123], narrow: [.12, .05, .46, .117], arrival: [.19, .91], opacity: .87, haze: .36 },
+  { wide: [.64, .18, .25, .167], narrow: [.72, .21, .41, .150], arrival: [0, .79], initial: [1.02, .82], opacity: .97, haze: .13 },
 ];
 
 // Near clouds are placed relative to the heading, with y measured down.
 const nearBanks = [
-  { settled: [.31, .34, .39, .33], arrival: [.28, .97], opacity: .78, haze: .23 },
-  { settled: [1.00, .83, .47, .35], arrival: [.14, .84], opacity: .76, haze: .08 },
+  { settled: [1.25, .95, .79, .51], arrival: [.02, .75], opacity: .93, extinction: 7.4, haze: .24 },
+  { settled: [.48, .49, .87, .87], arrival: [.12, .82], opacity: 1, extinction: 13, haze: .04 },
 ];
 
 const mix = (from, to, progress) => from + (to - from) * progress;
-const ease = (start, end, value) => {
+export const ease = (start, end, value) => {
   const progress = Math.max(0, Math.min(1, (value - start) / (end - start)));
   return progress * progress * (3 - 2 * progress);
 };
@@ -42,7 +39,7 @@ function placeBank(bank, seconds, sky, x, y, scaleX, scaleY) {
 export function createCloudScene() {
   function makeBank(layout, index, foreground) {
     const seed = index + (foreground ? distantBanks.length : 0);
-    const physics = createCloudPhysics(seed, foreground ? 1.04 : .86);
+    const physics = createCloudPhysics(seed, foreground ? .82 : .86);
     physics.reset();
     return { ...layout, seed, physics, footprint: {} };
   }
@@ -62,27 +59,19 @@ export function createCloudScene() {
       rear.forEach((bank) => {
         const [x, y, scaleX, scaleY] = compact ? bank.narrow : bank.wide;
         const arrival = placeBank(bank, seconds, sky, x, y, scaleX, scaleY);
-        bank.extinction = mix(3.1, 4.8, arrival);
+        bank.density = mix(5.4, 6.6, arrival);
       });
 
-      let nameLight = 0;
       front.forEach((bank) => {
         const [x, y, width, height] = bank.settled;
-        const scaleX = title.width * width;
         const arrival = placeBank(bank, seconds, sky,
-          title.x + title.width * x, title.y - title.height * y, scaleX, title.height * height);
-        bank.extinction = mix(2.8, 5.5, arrival);
-
-        // Nearby mist lends a soft blue bounce to the text as the banks part.
-        const cloudCenter = bank.footprint.x + bank.physics.centers[0] * scaleX;
-        const distance = Math.abs(cloudCenter - (title.x + title.width * .57)) / title.width;
-        nameLight = Math.max(nameLight, Math.max(0, 1 - distance) * bank.alpha);
+          title.x + title.width * x, title.y - title.height * y, title.width * width, title.height * height);
+        bank.density = mix(4.8, bank.extinction, arrival);
       });
 
       if (!still) banks.forEach(bank => {
         if (bank.alpha > .005) bank.physics.step(seconds, dt, pointer, bank.footprint, geometry);
       });
-      return Math.round(nameLight * 68) / 100;
     },
   };
 }

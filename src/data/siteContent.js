@@ -7,41 +7,87 @@ export const socialLinks = {
 
 export const featuredProject = {
   title: 'wissenwert',
-  description:
-    'A finance quiz that turns your confidence into risk. Test your knowledge with leverage and hedge mechanics.',
   href: 'https://wissenwert.juliandower.com',
-  linkLabel: 'Play wissenwert',
-  meta: [
-    { label: 'Format', value: 'Interactive quiz' },
-    { label: 'Focus', value: 'Learning through risk' },
-    { label: 'Status', value: 'Live' },
-  ],
+  en: {
+    description: 'A finance quiz where you decide how much to risk on each answer.',
+    linkLabel: 'Play wissenwert',
+  },
+  de: {
+    description: 'Ein Finanzquiz, bei dem du deinen Einsatz für jede Antwort selbst bestimmst.',
+    linkLabel: 'wissenwert spielen',
+  },
 };
 
 export const wispAnchorProject = {
   title: 'wisp-anchor',
-  description:
-    'A voice-first thinking tool that turns unstructured thoughts into an explorable mind map.',
   href: 'https://wisp-anchor.juliandower.com',
-  linkLabel: 'Open wisp-anchor',
-  meta: [
-    { label: 'Format', value: 'Voice-to-map tool' },
-    { label: 'Focus', value: 'Thinking out loud' },
-    { label: 'Status', value: 'Live' },
-  ],
+  en: {
+    description: 'Think out loud and turn your thoughts into a mind map.',
+    linkLabel: 'Open wisp-anchor',
+  },
+  de: {
+    description: 'Sprich deine Gedanken aus und halte sie als Mindmap fest.',
+    linkLabel: 'wisp-anchor öffnen',
+  },
 };
 
-export const experiments = [
-  {
-    title: 'Sound sketches',
-    description: 'Music production, loops and works in progress.',
+export const siteCopy = {
+  en: {
+    home: 'Home',
+    work: 'Work',
+    about: 'About',
+    contact: 'Contact',
+    navigation: 'Primary navigation',
+    switchLocale: 'Switch to German',
+    skip: 'Skip to content',
+    viewWork: 'View work',
+    bio: 'I build web apps and make music.',
+    cv: 'View my CV',
+    email: 'Email',
+    emailMe: 'Email me',
+    contactDetails: 'Contact details',
+    backToTop: 'Back to top',
+    illustration: 'Illustrative interface',
+    quiz: {
+      alt: 'Example wissenwert screen with a finance question, three answers, and a confidence slider.',
+      round: 'Round 4',
+      question: 'Which signal points to a tightening monetary policy?',
+      answers: ['Falling base rates', 'Rising base rates', 'Wider money supply'],
+      confidence: 'Confidence',
+    },
+    map: {
+      alt: 'Example wisp-anchor mind map linking a product idea to audience, energy, format, and friction.',
+      label: 'Voice to mind map',
+      nodes: ['Product', 'direction', 'Audience', 'Energy', 'Format', 'Friction', 'Who?', 'Why?'],
+    },
   },
-  {
-    title: 'Small interfaces',
-    description: 'Compact tools, game mechanics and interactions.',
+  de: {
+    home: 'Start',
+    work: 'Projekte',
+    about: 'Über mich',
+    contact: 'Kontakt',
+    navigation: 'Hauptnavigation',
+    switchLocale: 'Auf Englisch wechseln',
+    skip: 'Zum Inhalt springen',
+    viewWork: 'Projekte ansehen',
+    bio: 'Ich entwickle Web-Apps und mache Musik.',
+    cv: 'Mein Lebenslauf',
+    email: 'E-Mail',
+    emailMe: 'E-Mail schreiben',
+    contactDetails: 'Kontaktdaten',
+    backToTop: 'Nach oben',
+    illustration: 'Beispielansicht',
+    quiz: {
+      alt: 'Beispielansicht von wissenwert mit einer Finanzfrage, drei Antworten und einem Regler für die Antwortsicherheit.',
+      round: 'Runde 4',
+      question: 'Was deutet auf eine straffere Geldpolitik hin?',
+      answers: ['Sinkende Leitzinsen', 'Steigende Leitzinsen', 'Wachsende Geldmenge'],
+      confidence: 'Sicherheit',
+    },
+    map: {
+      alt: 'Beispiel-Mindmap von wisp-anchor, die eine Produktidee mit Zielgruppe, Energie, Format und Hürden verbindet.',
+      label: 'Von Sprache zur Mindmap',
+      nodes: ['Produkt-', 'richtung', 'Zielgruppe', 'Energie', 'Format', 'Hürden', 'Wer?', 'Warum?'],
+    },
   },
-  {
-    title: 'Learning systems',
-    description: 'Experiments in language, finance and visual thinking.',
-  },
-];
+};

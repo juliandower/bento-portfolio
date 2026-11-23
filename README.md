@@ -1,6 +1,6 @@
-# Julian Dower Portfolio
+# Portfolio
 
-A React portfolio rebuilt as a long-form bento feed with soft gradients, editorial cards, and one featured project link for [`wissenwert`](https://github.com/juliandower/wissenwert).
+Julian Dower’s portfolio features [wissenwert](https://wissenwert.juliandower.com), a finance quiz, and [wisp-anchor](https://wisp-anchor.juliandower.com), a voice-to-mind-map tool.
 
 ## Scripts
 

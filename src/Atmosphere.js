@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { cloudLobeCount } from './cloudPhysics';
-import { createCloudScene } from './cloudScene';
+import { createCloudScene, ease } from './cloudScene';
 import './Atmosphere.css';
 
 // The shader draws a cloud volume with premultiplied alpha over the hero.
@@ -39,7 +39,7 @@ const fragmentSource = (steps, stepSize) => `
     n += .15 * noise(p);
     return n;
   }
-  float density(vec3 p) {
+  float shape(vec3 p) {
     // Let overlapping lobes contribute to one density field. The strongest
     // lobe defines the contour, with a bounded boost where several meet.
     float strongest = 0.0;
@@ -51,7 +51,11 @@ const fragmentSource = (steps, stepSize) => `
       total += weight;
     }
     if (strongest < .08) return 0.0;
-    float body = strongest + min(.16, (total - strongest) * .13);
+    return strongest + min(.16, (total - strongest) * .13);
+  }
+  float density(vec3 p) {
+    float body = shape(p);
+    if (body == 0.0) return 0.0;
     // Advect fine detail slowly through the field while the lobes do the
     // larger movement. Erosion leaves translucent wisps along the edge.
     float detail = fbm(p * vec3(7.1, 6.2, 6.4) + vec3(time * .10 + cloudStyle.w * 9.7, time * .046, 0.0));
@@ -72,16 +76,20 @@ const fragmentSource = (steps, stepSize) => `
       if (d > .01) {
         // Look up toward the sun. Exposed lobes catch warm light while
         // overlapping volumes keep softer, cool shadows.
-        float towardSun = density(p + vec3(-.21, .25, -.24));
-        float transmission = exp(-towardSun * 1.65);
-        float light = clamp(.31 + transmission * .61 + point.y * .11 + (d - towardSun) * .19, .23, 1.0);
-        vec3 shade = mix(vec3(.35, .53, .69), vec3(1.0, .989, .955), light);
+        float towardSun = smoothstep(.24, .93, shape(p + vec3(-.25, .31, -.30)));
+        float transmission = exp(-towardSun * 1.95);
+        float light = clamp(.27 + transmission * .66 + point.y * .10 + (d - towardSun) * .21, .23, 1.0);
+        vec3 shade = mix(vec3(.40, .56, .72), vec3(1.0, .989, .961), light);
         shade = mix(shade, vec3(.52, .70, .84), cloudStyle.z * .56);
         float a = (1.0 - exp(-d * stepSize * cloudStyle.y)) * (1.0 - opacity);
         accumulated += shade * a;
         opacity += a;
       }
-      if (opacity > .996) break;
+      if (opacity > .995) {
+        accumulated /= opacity;
+        opacity = 1.0;
+        break;
+      }
     }
     gl_FragColor = vec4(accumulated, opacity) * cloudStyle.x;
   }
@@ -96,6 +104,31 @@ function compile(gl, type, source) {
     return null;
   }
   return shader;
+}
+
+function cloudBounds({ centers, inverseRadii }, { x, y, scaleX, scaleY }, width, height) {
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
+  // Round up the radius where shape() stops contributing to the ray.
+  const support = 1.14;
+
+  for (let i = 0; i < centers.length; i += 3) {
+    const radiusX = support / inverseRadii[i];
+    const radiusY = support / inverseRadii[i + 1];
+    minX = Math.min(minX, centers[i] - radiusX);
+    maxX = Math.max(maxX, centers[i] + radiusX);
+    minY = Math.min(minY, centers[i + 1] - radiusY);
+    maxY = Math.max(maxY, centers[i + 1] + radiusY);
+  }
+
+  return {
+    left: Math.max(0, Math.floor((x + minX * scaleX) * width)),
+    right: Math.min(width, Math.ceil((x + maxX * scaleX) * width)),
+    bottom: Math.max(0, Math.floor((y + minY * scaleY) * height)),
+    top: Math.min(height, Math.ceil((y + maxY * scaleY) * height)),
+  };
 }
 
 function createRenderer(gl, steps) {
@@ -150,19 +183,15 @@ function createRenderer(gl, steps) {
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.enable(gl.SCISSOR_TEST);
       gl.uniform1f(time, seconds);
-      banks.forEach(({ footprint, physics, alpha, extinction, haze, seed }) => {
+      banks.forEach(({ footprint, physics, alpha, density, haze, seed }) => {
         if (alpha < .005) return;
         const { x, y, scaleX, scaleY } = footprint;
-        // Restrict shading to the projected lobe bounds and leave room for a gust.
-        const left = Math.max(0, Math.floor((x - scaleX * 2.65) * width));
-        const right = Math.min(width, Math.ceil((x + scaleX * 2.65) * width));
-        const bottom = Math.max(0, Math.floor((y - scaleY * 2.10) * height));
-        const top = Math.min(height, Math.ceil((y + scaleY * 2.38) * height));
+        const { left, right, bottom, top } = cloudBounds(physics, footprint, width, height);
         if (right <= left || top <= bottom) return;
 
         gl.scissor(left, bottom, right - left, top - bottom);
         gl.uniform4f(cloud, x, y, scaleX, scaleY);
-        gl.uniform4f(cloudStyle, alpha, extinction, haze, seed);
+        gl.uniform4f(cloudStyle, alpha, density, haze, seed);
         gl.uniform3fv(centers, physics.centers);
         gl.uniform3fv(inverseRadii, physics.inverseRadii);
         gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -177,10 +206,9 @@ function createRenderer(gl, steps) {
 
 const clamp = (value) => Math.max(0, Math.min(1, value));
 
-function animateCloud(canvas, intro, rear, front) {
+function animateCloud(canvas, title, rear, front) {
   const hero = canvas.closest('.hero');
   const stage = hero.parentElement;
-  const title = intro.querySelector('h1');
   const preferences = [
     '(prefers-reduced-motion: reduce)',
     '(prefers-contrast: more)',
@@ -192,7 +220,7 @@ function animateCloud(canvas, intro, rear, front) {
   let frame = 0;
   let lastDraw = 0;
   let cloudTime = 0;
-  let lastNameLight;
+  let lastNameVisibility;
   let lastCloudCover;
   let visible = !document.hidden;
   let intersecting = true;
@@ -201,7 +229,7 @@ function animateCloud(canvas, intro, rear, front) {
   let scrollPassage;
 
   function onScroll() {
-    if (!geometry) return;
+    if (!intersecting || !geometry) return;
     scrollTarget = clamp((window.scrollY - geometry.pageTop) / geometry.travel);
     if (pointer) {
       const position = positionInHero(pointer.clientX, pointer.clientY);
@@ -222,7 +250,7 @@ function animateCloud(canvas, intro, rear, front) {
       left,
       pageTop: section.top + window.scrollY,
       travel: Math.max(1, section.height - height),
-      compact: width < 750,
+      compact: width <= 750,
       title: {
         x: (name.left - left) / width,
         y: 1 - (name.top - top) / height,
@@ -235,8 +263,8 @@ function animateCloud(canvas, intro, rear, front) {
       const ratio = Math.min(limit, Math.sqrt(budget / (width * height)));
       renderer.resize(Math.max(1, Math.round(width * ratio)), Math.max(1, Math.round(height * ratio)));
     };
-    resizeLayer(rear, 170000, .53);
-    resizeLayer(front, 145000, .58);
+    resizeLayer(rear, 120000, .46);
+    resizeLayer(front, 140000, .56);
     onScroll();
     if (scrollPassage === undefined) scrollPassage = scrollTarget;
     schedule();
@@ -288,16 +316,19 @@ function animateCloud(canvas, intro, rear, front) {
       return;
     }
 
-    const dt = lastDraw ? Math.min(.05, (now - lastDraw) / 1000) : 1 / 30;
+    const elapsed = lastDraw ? (now - lastDraw) / 1000 : 1 / 30;
+    const dt = Math.min(.05, elapsed);
     lastDraw = now;
-    scrollPassage += (scrollTarget - scrollPassage) * (1 - Math.exp(-dt * 3.8));
+    scrollPassage += (scrollTarget - scrollPassage) * (1 - Math.exp(-elapsed * 6));
     const passage = still ? 0 : scrollPassage;
     if (!still) cloudTime += dt;
     const seconds = still ? 0 : cloudTime;
-    const light = scene.update(seconds, dt, pointer, geometry, passage, still);
-    if (light !== lastNameLight) {
-      title.style.setProperty('--cloud-light', light);
-      lastNameLight = light;
+    scene.update(seconds, dt, pointer, geometry, passage, still);
+    // Close the last gaps left by wisps when the front bank reaches the name.
+    const nameVisibility = Math.round((1 - ease(.66, .83, passage)) * 100) / 100;
+    if (nameVisibility !== lastNameVisibility) {
+      title.style.setProperty('--name-visibility', nameVisibility);
+      lastNameVisibility = nameVisibility;
     }
     const cloudCover = Math.round(passage * 100) / 100;
     if (cloudCover !== lastCloudCover) {
@@ -327,6 +358,7 @@ function animateCloud(canvas, intro, rear, front) {
   function onIntersection(entries) {
     intersecting = entries[0].isIntersecting;
     if (!intersecting) clearPointer();
+    else onScroll();
     schedule();
   }
 
@@ -335,7 +367,6 @@ function animateCloud(canvas, intro, rear, front) {
   intersection?.observe(hero);
   resize?.observe(stage);
   resize?.observe(hero);
-  resize?.observe(intro);
   resize?.observe(title);
   window.addEventListener('resize', measure);
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -351,7 +382,7 @@ function animateCloud(canvas, intro, rear, front) {
 
   return () => {
     cancelAnimationFrame(frame);
-    title.style.removeProperty('--cloud-light');
+    title.style.removeProperty('--name-visibility');
     hero.style.removeProperty('--cloud-cover');
     intersection?.disconnect();
     resize?.disconnect();
@@ -368,15 +399,15 @@ function animateCloud(canvas, intro, rear, front) {
   };
 }
 
-export default function Atmosphere({ introRef }) {
+export default function Atmosphere({ titleRef }) {
   const rearRef = useRef(null);
   const frontRef = useRef(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const canvases = [rearRef.current, frontRef.current];
-    const intro = introRef.current;
-    if (canvases.some(canvas => !canvas) || !intro || !window.WebGLRenderingContext) return undefined;
+    const title = titleRef.current;
+    if (canvases.some(canvas => !canvas) || !title || !window.WebGLRenderingContext) return undefined;
     const contexts = canvases.map(canvas => canvas.getContext('webgl', {
       alpha: true,
       premultipliedAlpha: true,
@@ -388,14 +419,14 @@ export default function Atmosphere({ introRef }) {
     let stop;
     function start() {
       if (stop || contexts.some(gl => gl.isContextLost())) return;
-      const rear = createRenderer(contexts[0], 16);
-      const front = createRenderer(contexts[1], 22);
+      const rear = createRenderer(contexts[0], 13);
+      const front = createRenderer(contexts[1], 20);
       if (!rear || !front) {
         rear?.dispose();
         front?.dispose();
         return;
       }
-      const stopAnimation = animateCloud(canvases[0], intro, rear, front);
+      const stopAnimation = animateCloud(canvases[0], title, rear, front);
       stop = () => {
         stopAnimation();
         rear.dispose();
@@ -422,7 +453,7 @@ export default function Atmosphere({ introRef }) {
         canvas.removeEventListener('webglcontextrestored', start);
       });
     };
-  }, [introRef]);
+  }, [titleRef]);
 
   return (
     <>

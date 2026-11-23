@@ -1,5 +1,5 @@
 {
-  "name": "julian-dower-portfolio",
+  "name": "portfolio",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -46,5 +46,6 @@
     "@types/qs": "^6.9.17",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0"
-  }
+  },
+  "packageManager": "pnpm@10.7.0+sha1.66453f13fbf9078d3db193718206a8d738afdbdb"
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
@@ -63,8 +63,20 @@ const renderApp = () =>
   );
 
 describe('App routes', () => {
+  const dateOptions = new Intl.DateTimeFormat().resolvedOptions();
+
   beforeEach(() => {
     window.history.pushState({}, '', '/');
+    window.localStorage.clear();
+    jest.spyOn(window.navigator, 'languages', 'get').mockReturnValue(['en-US']);
+    jest.spyOn(Intl.DateTimeFormat.prototype, 'resolvedOptions').mockReturnValue({
+      ...dateOptions,
+      timeZone: 'UTC',
+    });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   test('renders the portfolio home page and featured work', () => {
@@ -103,11 +115,40 @@ describe('App routes', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: /let’s talk/i,
+        name: 'Contact',
       })
     ).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: /email dower\.julian@gmail\.com/i })
     ).toHaveAttribute('href', 'mailto:dower.julian@gmail.com');
+  });
+
+  test('defaults to German for a German-speaking region and remembers a manual override', () => {
+    jest.mocked(Intl.DateTimeFormat.prototype.resolvedOptions).mockReturnValue({
+      ...dateOptions,
+      timeZone: 'Europe/Vienna',
+    });
+    const { unmount } = renderApp();
+
+    expect(document.documentElement).toHaveAttribute('lang', 'de');
+    expect(screen.getByRole('heading', { name: 'Projekte' })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Auf Englisch wechseln' }));
+    expect(document.documentElement).toHaveAttribute('lang', 'en');
+    expect(screen.getByRole('heading', { name: 'Work' })).toBeInTheDocument();
+
+    unmount();
+    window.history.pushState({}, '', '/contact');
+    renderApp();
+    expect(screen.getByRole('heading', { name: 'Contact' })).toBeInTheDocument();
+  });
+
+  test('uses a German browser language outside German-speaking regions', () => {
+    jest.spyOn(window.navigator, 'languages', 'get').mockReturnValue(['de-CH']);
+    window.history.pushState({}, '', '/cv');
+    renderApp();
+
+    expect(document.documentElement).toHaveAttribute('lang', 'de');
+    expect(screen.getByRole('heading', { name: 'Berufserfahrung' })).toBeInTheDocument();
   });
 });
